@@ -3,6 +3,7 @@ package cpw.mods.fml.installer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
@@ -35,6 +36,7 @@ public class InstallerPanel extends JPanel {
     private JLabel infoLabel;
     private JDialog dialog;
     private JPanel fileEntryPanel;
+    private Image dialogIcon;
 
     private class FileSelectAction extends AbstractAction
     {
@@ -80,7 +82,16 @@ public class InstallerPanel extends JPanel {
         {
             throw Throwables.propagate(e);
         }
-
+        
+        try
+        {
+            this.dialogIcon = ImageIO.read(SimpleInstaller.class.getResourceAsStream(VersionInfo.getIconFileName()));
+        }
+        catch (IOException e)
+        {
+        	// don't care if no icon
+        }
+        
         JPanel logoSplash = new JPanel();
         logoSplash.setLayout(new BoxLayout(logoSplash, BoxLayout.Y_AXIS));
         ImageIcon icon = new ImageIcon(image);
@@ -207,9 +218,10 @@ public class InstallerPanel extends JPanel {
     {
         JOptionPane optionPane = new JOptionPane(this, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
 
-        dialog = optionPane.createDialog(null, "Mod system installer");
+        dialog = optionPane.createDialog(null, VersionInfo.getDialogTitle());
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setModal(true);
+        if (this.dialogIcon != null) dialog.setIconImage(this.dialogIcon);
         dialog.setVisible(true);
         int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
         if (result == JOptionPane.OK_OPTION)

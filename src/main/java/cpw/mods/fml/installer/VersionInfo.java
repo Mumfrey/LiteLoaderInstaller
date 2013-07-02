@@ -73,11 +73,21 @@ public class VersionInfo {
         return INSTANCE.versionData.getStringValue("install","welcome");
     }
 
+    public static String getDialogTitle()
+    {
+        return INSTANCE.versionData.getStringValue("install","title");
+    }
+
     public static String getLogoFileName()
     {
         return INSTANCE.versionData.getStringValue("install","logo");
     }
 
+    public static String getIconFileName()
+    {
+    	return INSTANCE.versionData.getStringValue("install","icon");
+    }
+    
     public static JsonNode getVersionInfo()
     {
         return INSTANCE.versionData.getNode("versionInfo");

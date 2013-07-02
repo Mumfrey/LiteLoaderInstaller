@@ -1,23 +1,25 @@
 {
   "install": {
-    "profileName": "FML",
-    "target":"FML5.2.29",
-    "path":"cpw.mods:fml:5.2.29",
-    "version":"FML 5.2.29",
-    "filePath":"fml-universal-1.5.2-5.2.29.1-16launch.jar",
-    "welcome":"Welcome to the simple FML installer.",
-    "minecraft":"1.5.2",
-    "logo":"/big_logo.png"
+    "profileName": "LiteLoader",
+    "target":"LiteLoader1.6.1",
+    "path":"com.mumfrey:liteloader:1.6.1",
+    "version":"LiteLoader 1.6.1",
+    "filePath":"liteloader-1.6.1.jar",
+    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.6.1.",
+    "minecraft":"1.6.1",
+    "title":"LiteLoader Installer",
+    "logo":"/liteloader_installer_logo.png",
+    "icon":"/liteloader_installer_icon.png"
   },
   "versionInfo": {
-      "id": "FML5.2.29",
-      "time": "2013-03-20T12:00:00-04:00",
-      "releaseTime": "2013-03-20T12:00:00-04:00",
+      "id": "LiteLoader1.6.1",
+      "time": "2013-07-01T12:00:00-04:00",
+      "releaseTime": "2013-07-01T12:00:00-04:00",
       "type": "release",
       "minecraftArguments": "${auth_player_name} ${auth_session} --gameDir ${game_directory} --assetsDir ${game_assets} --tweakClass cpw.mods.fml.common.launcher.FMLTweaker",
         "libraries": [
         {
-          "name": "cpw.mods:fml:5.2.29"
+          "name": "com.mumfrey:liteloader:1.6.1"
         },
         {
           "name": "net.minecraft:launchwrapper:1.3"

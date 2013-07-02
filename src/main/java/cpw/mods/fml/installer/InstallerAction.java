@@ -8,9 +8,9 @@ import com.google.common.base.Throwables;
 import com.google.common.reflect.Reflection;
 
 public enum InstallerAction {
-    CLIENT("Install client", "Install a new profile to the Mojang client launcher", ClientInstall.class),
-    SERVER("Install server", "Create a new modded server installation", ServerInstall.class),
-    EXTRACT("Extract", "Extract the contained jar file", ExtractAction.class);
+    CLIENT("Install LiteLoader", "Install a new profile to the Mojang client launcher", ClientInstall.class),
+//    SERVER("Install server", "Create a new modded server installation", ServerInstall.class),
+    EXTRACT("Extract LiteLoader", "Extract the contained jar file", ExtractAction.class);
 
     private String label;
     private String tooltip;
