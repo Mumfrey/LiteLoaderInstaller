@@ -85,7 +85,7 @@ public class VersionInfo {
 
     public static String getIconFileName()
     {
-    	return INSTANCE.versionData.getStringValue("install","icon");
+        return INSTANCE.versionData.getStringValue("install","icon");
     }
     
     public static JsonNode getVersionInfo()

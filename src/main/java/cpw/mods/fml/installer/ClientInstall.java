@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -24,7 +25,7 @@ import com.google.common.io.Files;
 public class ClientInstall implements ActionType {
 
     @Override
-    public boolean run(File target)
+    public boolean run(File target, List<ActionModifier> modifiers)
     {
         if (!target.exists())
         {
@@ -84,6 +85,10 @@ public class ClientInstall implements ActionType {
 
         try
         {
+            for (ActionModifier modifier : modifiers)
+            {
+                versionJson = modifier.modifyVersion(versionJson);
+            }
             BufferedWriter newWriter = Files.newWriter(versionJsonFile, Charsets.UTF_8);
             PrettyJsonFormatter.fieldOrderPreservingPrettyJsonFormatter().format(versionJson,newWriter);
             newWriter.close();
@@ -163,6 +168,7 @@ public class ClientInstall implements ActionType {
     }
 
 
+    @Override
     public String getFileError(File targetDir)
     {
         if (targetDir.exists())

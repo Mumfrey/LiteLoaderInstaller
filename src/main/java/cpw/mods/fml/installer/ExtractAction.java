@@ -2,13 +2,14 @@ package cpw.mods.fml.installer;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
 public class ExtractAction implements ActionType {
 
     @Override
-    public boolean run(File target)
+    public boolean run(File target, List<ActionModifier> modifiers)
     {
         File file = new File(target,VersionInfo.getContainedFile());
         try

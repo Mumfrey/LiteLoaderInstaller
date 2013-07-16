@@ -41,7 +41,7 @@ public class ServerInstall implements ActionType {
     }
 
     @Override
-    public boolean run(File target)
+    public boolean run(File target, List<ActionModifier> modifiers)
     {
         if (target.exists() && !target.isDirectory())
         {

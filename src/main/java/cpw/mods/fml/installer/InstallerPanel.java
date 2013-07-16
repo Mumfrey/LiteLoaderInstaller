@@ -5,31 +5,22 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.swing.AbstractAction;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 import com.google.common.base.Throwables;
 
-public class InstallerPanel extends JPanel {
+public class InstallerPanel extends JPanel implements ActionListener {
     private File targetDir;
     private ButtonGroup choiceButtonGroup;
     private JTextField selectedDirText;
@@ -37,6 +28,7 @@ public class InstallerPanel extends JPanel {
     private JDialog dialog;
     private JPanel fileEntryPanel;
     private Image dialogIcon;
+    private List<JCheckBox> modifierCheckBoxes = new ArrayList<JCheckBox>();
 
     private class FileSelectAction extends AbstractAction
     {
@@ -128,11 +120,29 @@ public class InstallerPanel extends JPanel {
             radioButton.setSelected(first);
             radioButton.setAlignmentX(LEFT_ALIGNMENT);
             radioButton.setAlignmentY(CENTER_ALIGNMENT);
+            radioButton.addActionListener(this);
             choiceButtonGroup.add(radioButton);
             choicePanel.add(radioButton);
             first = false;
         }
+        
+        JLabel chainLabel = new JLabel("Chaining options: (cascadedTweaks)");
+        choicePanel.add(chainLabel);
 
+        for (InstallerModifier modifier : InstallerModifier.values())
+        {
+            JCheckBox modifierCheckBox = new JCheckBox();
+            modifierCheckBoxes.add(modifierCheckBox);
+            modifierCheckBox.setAction(sba);
+            modifierCheckBox.setText(modifier.getButtonLabel());
+            modifierCheckBox.setActionCommand(modifier.name());
+            modifierCheckBox.setToolTipText(modifier.getTooltip());
+            modifierCheckBox.setSelected(false);
+            modifierCheckBox.setAlignmentX(LEFT_ALIGNMENT);
+            modifierCheckBox.setAlignmentY(CENTER_ALIGNMENT);
+            choicePanel.add(modifierCheckBox);
+        }
+        
         choicePanel.setAlignmentX(RIGHT_ALIGNMENT);
         choicePanel.setAlignmentY(CENTER_ALIGNMENT);
         add(choicePanel);
@@ -173,6 +183,16 @@ public class InstallerPanel extends JPanel {
         updateFilePath();
     }
 
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        if (e.getSource() instanceof JRadioButton)
+        {
+            InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());
+            for (JCheckBox checkBox : modifierCheckBoxes)
+                checkBox.setEnabled(action.allowsModifiers());
+        }
+    }
 
     private void updateFilePath()
     {
@@ -227,7 +247,13 @@ public class InstallerPanel extends JPanel {
         if (result == JOptionPane.OK_OPTION)
         {
             InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());
-            if (action.run(targetDir))
+            ArrayList<ActionModifier> modifiers = new ArrayList<ActionModifier>();
+            for (JCheckBox modifierCheckBox : modifierCheckBoxes)
+            {            
+                if (modifierCheckBox.isEnabled() && modifierCheckBox.isSelected())
+                    modifiers.add(InstallerModifier.valueOf(modifierCheckBox.getActionCommand()).getModifier());
+            }
+            if (action.run(targetDir, modifiers))
             {
                 JOptionPane.showMessageDialog(null, action.getSuccessMessage(), "Complete", JOptionPane.INFORMATION_MESSAGE);
             }

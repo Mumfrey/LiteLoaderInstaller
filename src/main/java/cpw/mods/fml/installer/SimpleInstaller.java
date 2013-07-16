@@ -22,12 +22,12 @@ public class SimpleInstaller {
      */
     public static void main(String[] args) throws IOException
     {
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Throwable th) {}
-    	
+        try
+        {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }
+        catch (Throwable th) {}
+        
         String userHomeDir = System.getProperty("user.home", ".");
         String osType = System.getProperty("os.name").toLowerCase(Locale.ENGLISH);
         File targetDir = null;
