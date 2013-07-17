@@ -2,16 +2,11 @@ package cpw.mods.fml.installer;
 
 import java.io.File;
 
-import javax.swing.Icon;
-
 import com.google.common.base.Throwables;
-import com.google.common.reflect.Reflection;
 
 public enum InstallerModifier {
     FORGE(ForgeModifier.class);
 
-    private String label;
-    private String tooltip;
     private ActionModifier modifier;
 
     private InstallerModifier(Class<? extends ActionModifier> modifierType)
@@ -19,8 +14,6 @@ public enum InstallerModifier {
         try
         {
             this.modifier = modifierType.newInstance();
-            this.label = this.modifier.getLabel();
-            this.tooltip = this.modifier.getTooltip();
         }
         catch (Exception e)
         {
@@ -29,16 +22,26 @@ public enum InstallerModifier {
     }
     public String getButtonLabel()
     {
-        return label;
+        return this.modifier.getLabel();
     }
 
     public String getTooltip()
     {
-        return tooltip;
+        return this.modifier.getTooltip();
     }
 
     public ActionModifier getModifier()
     {
         return modifier;
+    }
+    
+    public void refresh(boolean valid, File targetDir)
+    {
+    	this.modifier.refresh(valid, targetDir);
+    }
+    
+    boolean isAvailable()
+    {
+    	return this.modifier.isAvailable();
     }
 }

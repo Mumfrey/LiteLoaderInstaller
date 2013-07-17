@@ -20,7 +20,7 @@ import javax.swing.border.LineBorder;
 
 import com.google.common.base.Throwables;
 
-public class InstallerPanel extends JPanel implements ActionListener {
+public class InstallerPanel extends JPanel {
     private File targetDir;
     private ButtonGroup choiceButtonGroup;
     private JTextField selectedDirText;
@@ -62,6 +62,30 @@ public class InstallerPanel extends JPanel implements ActionListener {
         }
 
     }
+    
+    private class ActionChangeAction extends AbstractAction
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            updateModifiers();
+        }
+    }
+
+    /**
+     * @param e
+     */
+    protected void updateModifiers()
+    {
+        InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());
+        for (JCheckBox checkBox : modifierCheckBoxes)
+        {
+            InstallerModifier modifier = InstallerModifier.valueOf(checkBox.getActionCommand());
+            checkBox.setEnabled(action.allowsModifiers() && modifier.isAvailable());
+            checkBox.setText(modifier.getButtonLabel());
+        }
+    }
+    
     public InstallerPanel(File targetDir)
     {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -81,7 +105,7 @@ public class InstallerPanel extends JPanel implements ActionListener {
         }
         catch (IOException e)
         {
-        	// don't care if no icon
+            // don't care if no icon
         }
         
         JPanel logoSplash = new JPanel();
@@ -120,7 +144,7 @@ public class InstallerPanel extends JPanel implements ActionListener {
             radioButton.setSelected(first);
             radioButton.setAlignmentX(LEFT_ALIGNMENT);
             radioButton.setAlignmentY(CENTER_ALIGNMENT);
-            radioButton.addActionListener(this);
+            radioButton.addActionListener(new ActionChangeAction());
             choiceButtonGroup.add(radioButton);
             choicePanel.add(radioButton);
             first = false;
@@ -183,17 +207,6 @@ public class InstallerPanel extends JPanel implements ActionListener {
         updateFilePath();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent e)
-    {
-        if (e.getSource() instanceof JRadioButton)
-        {
-            InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());
-            for (JCheckBox checkBox : modifierCheckBoxes)
-                checkBox.setEnabled(action.allowsModifiers());
-        }
-    }
-
     private void updateFilePath()
     {
         try
@@ -208,6 +221,9 @@ public class InstallerPanel extends JPanel implements ActionListener {
 
         InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());
         boolean valid = action.isPathValid(targetDir);
+        
+        for (InstallerModifier installerModifier : InstallerModifier.values())
+            installerModifier.getModifier().refresh(valid, targetDir);
 
         if (valid)
         {
@@ -232,6 +248,8 @@ public class InstallerPanel extends JPanel implements ActionListener {
                 dialog.pack();
             }
         }
+        
+        updateModifiers();
     }
 
     public void run()

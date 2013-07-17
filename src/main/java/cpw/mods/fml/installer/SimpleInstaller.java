@@ -24,7 +24,10 @@ public class SimpleInstaller {
     {
         try
         {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            if (System.getProperty("os.name").toLowerCase().contains("win"))
+            {
+                UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            }
         }
         catch (Throwable th) {}
         

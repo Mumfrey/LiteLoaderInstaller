@@ -1,7 +1,10 @@
 package cpw.mods.fml.installer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
 
@@ -14,12 +17,16 @@ import argo.jdom.JsonStringNode;
 
 public class ForgeModifier implements ActionModifier
 {
-    private static final String FORGE_VERSION = "9.10.0.793";
+    private static Pattern versionPattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$");
+    
+    private String forgeVersion = "9.10.0.794";
+    
+    private boolean isAvailable;
 
     @Override
     public String getLabel()
     {
-        return "Chain to Minecraft Forge " + FORGE_VERSION;
+        return "Chain to Minecraft Forge " + forgeVersion;
     }
     
     @Override
@@ -71,7 +78,7 @@ public class ForgeModifier implements ActionModifier
     protected void addLibraries(List<JsonNode> libraries)
     {
         JsonNode forgeNode = JsonNodeBuilders.anObjectBuilder()
-            .withField("name", JsonNodeBuilders.aStringBuilder("net.minecraftforge:minecraftforge:" + FORGE_VERSION))
+            .withField("name", JsonNodeBuilders.aStringBuilder("net.minecraftforge:minecraftforge:" + forgeVersion))
             .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
             .build();
         
@@ -81,5 +88,77 @@ public class ForgeModifier implements ActionModifier
         
         libraries.add(forgeNode);
         libraries.add(asmNode);
+    }
+    
+    @Override
+    public void refresh(boolean valid, File targetDir)
+    {
+//        this.isAvailable = false;
+        this.isAvailable = valid;
+        
+        if (valid)
+        {
+            File libraries = new File(targetDir, "libraries");
+            
+            if (libraries.exists() && libraries.isDirectory())
+            {
+                File minecraftForge = new File(libraries, "net/minecraftforge/minecraftforge");
+                
+                if (minecraftForge.exists() && minecraftForge.isDirectory())
+                {
+                    String maxVersion = "-";
+                    
+                    for (File versionFolder : minecraftForge.listFiles())
+                    {
+                        if (versionFolder.isDirectory())
+                        {
+                            maxVersion = getMaxVersion(maxVersion, versionFolder.getName());
+                        }
+                    }
+                    
+                    if (!maxVersion.equals("-"))
+                    {
+                        this.forgeVersion = maxVersion;
+//                        this.isAvailable = true;
+                    }
+                }
+            }
+        }
+    }
+    
+    private String getMaxVersion(String maxVersion, String version)
+    {
+        Matcher maxVersionPatternMatcher = versionPattern.matcher(maxVersion);
+        Matcher versionPatternMatcher = versionPattern.matcher(version);
+        
+        if (versionPatternMatcher.matches())
+        {
+            if (!maxVersionPatternMatcher.matches()) return version;
+            
+            for (int part = 1; part < 5; part++)
+            {
+                String winner = compare(maxVersion, version, maxVersionPatternMatcher.group(part), versionPatternMatcher.group(part));
+                if (winner != null) return winner;
+            }
+        }
+        
+        return maxVersion;
+    }
+
+    protected String compare(String maxVersion, String version, String cmpMax, String cmpVer) throws NumberFormatException
+    {
+        int maxVersionNum    = Integer.parseInt(cmpMax);
+        int versionNum       = Integer.parseInt(cmpVer);
+
+        if (versionNum > maxVersionNum) return version;
+        if (maxVersionNum > versionNum) return maxVersion;
+        
+        return null;
+    }
+
+    @Override
+    public boolean isAvailable()
+    {
+        return this.isAvailable;
     }
 }
