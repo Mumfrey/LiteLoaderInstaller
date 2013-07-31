@@ -5,7 +5,8 @@ import java.io.File;
 import com.google.common.base.Throwables;
 
 public enum InstallerModifier {
-    FORGE(ForgeModifier.class);
+    FORGE(ForgeModifier.class),
+    FML(FMLModifier.class);
 
     private ActionModifier modifier;
 
@@ -43,5 +44,10 @@ public enum InstallerModifier {
     boolean isAvailable()
     {
     	return this.modifier.isAvailable();
+    }
+    
+    public String getExclusivityKey()
+    {
+        return this.modifier.getExclusivityKey();
     }
 }

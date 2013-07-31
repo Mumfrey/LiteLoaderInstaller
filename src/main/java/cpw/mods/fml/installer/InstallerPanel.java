@@ -12,7 +12,9 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -29,6 +31,7 @@ public class InstallerPanel extends JPanel {
     private JPanel fileEntryPanel;
     private Image dialogIcon;
     private List<JCheckBox> modifierCheckBoxes = new ArrayList<JCheckBox>();
+    private boolean exclusivityConflict = false;
 
     private class FileSelectAction extends AbstractAction
     {
@@ -84,6 +87,29 @@ public class InstallerPanel extends JPanel {
             checkBox.setEnabled(action.allowsModifiers() && modifier.isAvailable());
             checkBox.setText(modifier.getButtonLabel());
         }
+    }
+    
+    protected boolean exclusivityCheck()
+    {
+        Map<String, String> exclusivity = new HashMap<String, String>();
+        
+        for (JCheckBox modifierCheckBox : modifierCheckBoxes)
+        {            
+            if (modifierCheckBox.isEnabled())
+            {
+                ActionModifier modifier = InstallerModifier.valueOf(modifierCheckBox.getActionCommand()).getModifier();
+                if (exclusivity.containsKey(modifier.getExclusivityKey()) && modifierCheckBox.isSelected())
+                {
+                    String conflictMessage = "Unable to continue: " + modifier.getLabel() + " conflicts with " + exclusivity.get(modifier.getExclusivityKey())  + "\nUncheck one of these options";
+                    JOptionPane.showMessageDialog(null, conflictMessage, "Conflict", JOptionPane.WARNING_MESSAGE);
+                    return true;
+                }
+                else if (modifierCheckBox.isSelected())
+                    exclusivity.put(modifier.getExclusivityKey(), modifier.getLabel());
+            }
+        }
+        
+        return false;
     }
     
     public InstallerPanel(File targetDir)
@@ -260,8 +286,13 @@ public class InstallerPanel extends JPanel {
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setModal(true);
         if (this.dialogIcon != null) dialog.setIconImage(this.dialogIcon);
-        dialog.setVisible(true);
-        int result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
+        int result = -1;
+        do
+        {
+            dialog.setVisible(true);
+            result = (Integer) (optionPane.getValue() != null ? optionPane.getValue() : -1);
+            exclusivityConflict = result == JOptionPane.OK_OPTION && exclusivityCheck();
+        } while (exclusivityConflict);
         if (result == JOptionPane.OK_OPTION)
         {
             InstallerAction action = InstallerAction.valueOf(choiceButtonGroup.getSelection().getActionCommand());

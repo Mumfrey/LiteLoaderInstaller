@@ -12,6 +12,8 @@ public interface ActionModifier {
 
     String getTooltip();
     
+    String getExclusivityKey();
+    
     void refresh(boolean valid, File targetDir);
     
     boolean isAvailable();
