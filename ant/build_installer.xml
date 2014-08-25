@@ -1,9 +1,37 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_run_jar" name="Create Runnable Jar for Project Installer">
+<project default="create_exe" name="Create Runnable Jar for Project Installer">
 	<property name="mcp.dir" location="../../.." />
+	
+	<property name="ver.major" value="1" />
+	<property name="ver.minor" value="6" />
+	<property name="ver.revision" value="4" />
+	<property name="ver.release" value="-01" />
+	<property name="ver.build" value="1" />
 
-	<target name="create_run_jar">
-		<jar destfile="${mcp.dir}/build/dist/liteloader-installer-1.6.2-04.jar" filesetmanifest="mergewithoutmain">
+	<property name="version" value="${ver.major}.${ver.minor}.${ver.revision}${ver.release}" />
+	<property name="mcversion" value="${ver.major}.${ver.minor}.${ver.revision}" />
+	<property name="msversion" value="${ver.major}.${ver.minor}.${ver.revision}.${ver.build}" />
+
+    <target name="pre">
+    	<delete verbose="true">
+    		<fileset file="${mcp.dir}/build/dist/liteloader-installer-${version}.jar" />
+    		<fileset file="${mcp.dir}/build/dist/liteloader-installer-${version}.exe" />
+    	</delete>
+    </target>
+
+	<target name="prep" depends="pre">
+        <concat destfile="package_exe.xml" append="false">
+            <fileset file="package_exe_tpl.xml" />
+            <filterchain><expandproperties /></filterchain>
+        </concat>
+        <concat destfile="liteloader.manifest" append="false">
+            <fileset file="../liteloader.manifest" />
+            <filterchain><expandproperties /></filterchain>
+        </concat>
+    </target>
+	
+	<target name="create_run_jar" depends="prep">
+		<jar destfile="${mcp.dir}/build/dist/liteloader-installer-${version}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="cpw.mods.fml.installer.SimpleInstaller"/>
 				<attribute name="Class-Path" value="."/>
@@ -13,4 +41,10 @@
 			<zipfileset excludes="META-INF/*.SF" src="${mcp.dir}/eclipse/Installer/lib/argo-3.7.jar"/>
 		</jar>
 	</target>
+	
+    <target name="create_exe" depends="create_run_jar">
+        <java jar="${mcp.dir}/eclipse/Installer/ant/launch4j/launch4j.jar" dir="${mcp.dir}/eclipse/Installer/ant/launch4j" fork="true">
+            <arg value="..\\package_exe.xml"/>
+        </java>
+    </target>
 </project>

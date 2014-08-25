@@ -1,0 +1,34 @@
+<launch4jConfig>
+  <dontWrapJar>false</dontWrapJar>
+  <headerType>gui</headerType>
+  <jar>..\..\..\build\dist\liteloader-installer-${version}.jar</jar>
+  <outfile>..\..\..\build\dist\liteloader-installer-${version}.exe</outfile>
+  <errTitle></errTitle>
+  <cmdLine></cmdLine>
+  <chdir></chdir>
+  <priority>normal</priority>
+  <downloadUrl>http://java.com/download</downloadUrl>
+  <supportUrl></supportUrl>
+  <customProcName>false</customProcName>
+  <stayAlive>false</stayAlive>
+  <manifest>liteloader.manifest</manifest>
+  <icon>..\liteloader_installer_icon.ico</icon>
+  <jre>
+    <path></path>
+    <minVersion>1.6.0</minVersion>
+    <maxVersion></maxVersion>
+    <jdkPreference>preferJre</jdkPreference>
+  </jre>
+  <versionInfo>
+    <fileVersion>${msversion}</fileVersion>
+    <txtFileVersion>${version}</txtFileVersion>
+    <fileDescription>LiteLoader Installer for Minecraft ${mcversion} release {ver.release}</fileDescription>
+    <copyright>Copyright (C) 2013 Adam Mummery-Smith</copyright>
+    <productVersion>${msversion}</productVersion>
+    <txtProductVersion>${version}</txtProductVersion>
+    <productName>LiteLoader</productName>
+    <companyName></companyName>
+    <internalName>LiteLoader</internalName>
+    <originalFilename>liteloader-installer-${version}.exe</originalFilename>
+  </versionInfo>
+</launch4jConfig>
