@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>..\..\..\build\dist\liteloader-installer-1.7.2-04.jar</jar>
-  <outfile>..\..\..\build\dist\liteloader-installer-1.7.2-04.exe</outfile>
+  <jar>..\..\..\build\dist\liteloader-installer-1.7.10-03.jar</jar>
+  <outfile>..\..\..\build\dist\liteloader-installer-1.7.10-03.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -20,15 +20,15 @@
     <jdkPreference>preferJre</jdkPreference>
   </jre>
   <versionInfo>
-    <fileVersion>1.7.2.4</fileVersion>
-    <txtFileVersion>1.7.2-04</txtFileVersion>
-    <fileDescription>LiteLoader Installer for Minecraft 1.7.2 release {ver.release}</fileDescription>
+    <fileVersion>1.7.10.3</fileVersion>
+    <txtFileVersion>1.7.10-03</txtFileVersion>
+    <fileDescription>LiteLoader Installer for Minecraft 1.7.10 release {ver.release}</fileDescription>
     <copyright>Copyright (C) 2013 Adam Mummery-Smith</copyright>
-    <productVersion>1.7.2.4</productVersion>
-    <txtProductVersion>1.7.2-04</txtProductVersion>
+    <productVersion>1.7.10.3</productVersion>
+    <txtProductVersion>1.7.10-03</txtProductVersion>
     <productName>LiteLoader</productName>
     <companyName></companyName>
     <internalName>LiteLoader</internalName>
-    <originalFilename>liteloader-installer-1.7.2-04.exe</originalFilename>
+    <originalFilename>liteloader-installer-1.7.10-03.exe</originalFilename>
   </versionInfo>
 </launch4jConfig>
