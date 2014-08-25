@@ -176,7 +176,7 @@ public class InstallerPanel extends JPanel {
             first = false;
         }
         
-        JLabel chainLabel = new JLabel("Chaining options: (cascadedTweaks)");
+        JLabel chainLabel = new JLabel("Chaining options: (additional tweakers to load)");
         choicePanel.add(chainLabel);
 
         for (InstallerModifier modifier : InstallerModifier.values())

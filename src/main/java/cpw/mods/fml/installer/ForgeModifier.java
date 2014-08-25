@@ -8,26 +8,41 @@ import argo.jdom.JsonNodeBuilders;
 
 public class ForgeModifier extends CascadeModifier
 {
-    private String forgeVersion = "9.10.0.804";
+    protected String name = null;
+    
+    protected String version = null;
+    
+    protected String minRequiredVersion = "0.0.0.0";
     
     protected boolean isAvailable;
+    
+    public ForgeModifier()
+    {
+        this("Minecraft Forge", "9.11.0.879");
+    }
+    
+    protected ForgeModifier(String name, String minRequiredVersion)
+    {
+        this.name = name;
+        this.minRequiredVersion = minRequiredVersion;
+    }
 
     @Override
     public String getLabel()
     {
-        return "Chain to Minecraft Forge " + this.forgeVersion;
+        return String.format("Chain to %s %s", this.name, this.version != null ? this.version : "(Not detected)");
     }
     
     @Override
     public String getTooltip()
     {
-        return "Chains the LiteLoader tweaker to the Minecraft Forge tweaker";
+        return String.format("Chains the LiteLoader tweaker to the %s tweaker", this.name);
     }
     
     @Override
     protected String getFailureMessage()
     {
-        return "There was a problem chaining to Minecraft Forge, check the version JSON";
+        return String.format("There was a problem chaining to %s, check the version JSON", this.name);
     }
     
     @Override
@@ -60,27 +75,55 @@ public class ForgeModifier extends CascadeModifier
     protected void addLibraries(List<JsonNode> libraries)
     {
         JsonNode forgeNode = JsonNodeBuilders.anObjectBuilder()
-            .withField("name", JsonNodeBuilders.aStringBuilder("net.minecraftforge:minecraftforge:" + this.forgeVersion))
+            .withField("name", JsonNodeBuilders.aStringBuilder("net.minecraftforge:minecraftforge:" + this.version))
             .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
             .build();
+        libraries.add(forgeNode);
         
+        this.addCommonLibraries(libraries);
+    }
+
+    /**
+     * @param libraries
+     */
+    protected void addCommonLibraries(List<JsonNode> libraries)
+    {
         JsonNode asmNode = JsonNodeBuilders.anObjectBuilder()
                 .withField("name", JsonNodeBuilders.aStringBuilder("org.ow2.asm:asm-all:4.1"))
                 .build();
-        
-        libraries.add(forgeNode);
         libraries.add(asmNode);
+
+        JsonNode scalaLibraryNode = JsonNodeBuilders.anObjectBuilder()
+                .withField("name", JsonNodeBuilders.aStringBuilder("org.scala-lang:scala-library:2.10.2"))
+                .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
+                .build();
+        libraries.add(scalaLibraryNode);
+
+        JsonNode scalaCompilerNode = JsonNodeBuilders.anObjectBuilder()
+                .withField("name", JsonNodeBuilders.aStringBuilder("org.scala-lang:scala-compiler:2.10.2"))
+                .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
+                .build();
+        libraries.add(scalaCompilerNode);
     }
     
     @Override
     public void refresh(boolean valid, File targetDir)
     {
-        this.isAvailable = valid;
+        this.isAvailable = false;
+        this.version = null;
         
         if (valid)
         {
             String version = this.getLatestLibraryVersion(targetDir, this.getLibPath());
-            if (version != null) this.forgeVersion = version;
+            if (version == null) return;
+            
+            String maxVersion = this.getMaxVersion(this.minRequiredVersion, version);
+            
+            if (maxVersion != this.minRequiredVersion)
+            {
+                this.version = version;
+                this.isAvailable = valid;
+            }
         }
     }
 }

@@ -20,23 +20,14 @@ public abstract class CascadeModifier implements ActionModifier
 {
     protected static Pattern versionPattern = Pattern.compile("^(\\d+)\\.(\\d+)\\.(\\d+)\\.(\\d+)$");
     
-    private static String tweaks = null;
-    
-    private static String originalArgs = null;
-    
     private static Set<String> addedLibraries = new HashSet<String>();
     
-    private static Set<String> addedTweaks = new HashSet<String>();
+    private static Set<String> tweaks = new HashSet<String>();
     
     @Override
     public JsonRootNode modifyVersion(JsonRootNode versionJson)
     {
         String tweakClass = this.getTweakClass();
-        if (tweakClass != null && !addedTweaks.contains(tweakClass))
-        {
-            addedTweaks.add(tweakClass);
-            tweaks = tweaks == null ? tweakClass : String.format("%s,%s", tweaks, tweakClass);
-        }
         
         try
         {
@@ -66,10 +57,10 @@ public abstract class CascadeModifier implements ActionModifier
                     libraries.addAll(field.getValue().getArrayNode());
                     copyFields.add(new JsonField(fieldName, JsonNodeFactories.array(libraries)));
                 }
-                else if ("minecraftArguments".equals(fieldName.getText()))
+                else if ("minecraftArguments".equals(fieldName.getText()) && tweakClass != null && !tweaks.contains(tweakClass))
                 {
-                    if (originalArgs == null) originalArgs = field.getValue().getText();
-                    copyFields.add(new JsonField(fieldName, JsonNodeFactories.string(originalArgs + " --cascadedTweaks " + tweaks)));
+                    copyFields.add(new JsonField(fieldName, JsonNodeFactories.string(field.getValue().getText() + " --tweakClass " + tweakClass)));
+                    tweaks.add(tweakClass);
                 }
                 else
                 {

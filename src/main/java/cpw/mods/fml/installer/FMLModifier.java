@@ -7,12 +7,9 @@ import argo.jdom.JsonNodeBuilders;
 
 public class FMLModifier extends ForgeModifier
 {
-    private String fmlVersion = "6.2.38.726";
-    
-    @Override
-    public String getLabel()
+    public FMLModifier()
     {
-        return "Chain to Forge ModLoader " + this.fmlVersion;
+        super("Forge ModLoader", "6.4.0.752");
     }
     
     @Override
@@ -40,15 +37,11 @@ public class FMLModifier extends ForgeModifier
     protected void addLibraries(List<JsonNode> libraries)
     {
         JsonNode forgeNode = JsonNodeBuilders.anObjectBuilder()
-            .withField("name", JsonNodeBuilders.aStringBuilder("cpw.mods:fml:" + this.fmlVersion))
+            .withField("name", JsonNodeBuilders.aStringBuilder("cpw.mods:fml:" + this.version))
             .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
             .build();
-        
-        JsonNode asmNode = JsonNodeBuilders.anObjectBuilder()
-                .withField("name", JsonNodeBuilders.aStringBuilder("org.ow2.asm:asm-all:4.1"))
-                .build();
-        
         libraries.add(forgeNode);
-        libraries.add(asmNode);
+        
+        this.addCommonLibraries(libraries);
     }
 }
