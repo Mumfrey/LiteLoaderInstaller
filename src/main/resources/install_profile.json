@@ -3,7 +3,7 @@
     "profileName": "LiteLoader",
     "target":"LiteLoader1.6.2",
     "path":"com.mumfrey:liteloader:1.6.2",
-    "version":"LiteLoader 1.6.2_03",
+    "version":"LiteLoader 1.6.2_04",
     "filePath":"liteloader-1.6.2.jar",
     "welcome":"Welcome to the LiteLoader installer for Minecraft 1.6.2.",
     "minecraft":"1.6.2",
@@ -13,8 +13,8 @@
   },
   "versionInfo": {
       "id": "LiteLoader1.6.2",
-      "time": "2013-07-08T12:00:00-04:00",
-      "releaseTime": "2013-07-08T12:00:00-04:00",
+      "time": "2013-08-05T12:00:00-04:00",
+      "releaseTime": "2013-08-05T12:00:00-04:00",
       "type": "release",
       "minecraftArguments": "--username ${auth_player_name} --session ${auth_session} --gameDir ${game_directory} --assetsDir ${game_assets} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
         "libraries": [
