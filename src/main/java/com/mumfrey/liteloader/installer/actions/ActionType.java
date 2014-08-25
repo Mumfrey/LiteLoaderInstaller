@@ -25,4 +25,8 @@ public interface ActionType
 	public abstract String getFailureMessage();
 
 	public abstract JPanel getOptionsPanel();
+	
+	public abstract boolean isEnabled();
+
+	public abstract String getLabelSuffix();
 }

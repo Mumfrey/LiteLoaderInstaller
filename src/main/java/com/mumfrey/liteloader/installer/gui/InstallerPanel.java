@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -185,7 +186,7 @@ public class InstallerPanel extends ImagePanel
 		outerPanel.setPreferredSize(new Dimension(850, 450));
 		outerPanel.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		outerPanel.add(Box.createVerticalStrut(140), BorderLayout.NORTH);
+		outerPanel.add(Box.createVerticalStrut(120), BorderLayout.NORTH);
 		outerPanel.add(Box.createHorizontalStrut(300), BorderLayout.WEST);
 		outerPanel.add(Box.createHorizontalStrut(32), BorderLayout.EAST);
 		
@@ -204,23 +205,25 @@ public class InstallerPanel extends ImagePanel
 		boolean first = true;
 		
 		SelectButtonAction selectButtonAction = new SelectButtonAction();
+		ActionChangeAction actionChangeAction = new ActionChangeAction();
 		for (InstallerAction action : InstallerAction.values())
 		{
 			JPanel radioButtonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 			radioButtonPanel.setOpaque(false);
 			
-			JRadioButton actionRadioButton = new JRadioButton();
-			actionRadioButton.setOpaque(false);
+			ActionRadioButton actionRadioButton = new ActionRadioButton(action, first);
 			actionRadioButton.setForeground(FOREGROUND_COLOUR);
 			actionRadioButton.setAction(selectButtonAction);
+			actionRadioButton.addActionListener(actionChangeAction);
+			actionRadioButton.setActionCommand(action.name());
+			actionRadioButton.setOpaque(false);
 			actionRadioButton.setText(action.getButtonLabel());
 			actionRadioButton.setActionCommand(action.name());
 			actionRadioButton.setToolTipText(action.getTooltip());
 			actionRadioButton.setSelected(first);
 			actionRadioButton.setAlignmentX(LEFT_ALIGNMENT);
 			actionRadioButton.setAlignmentY(CENTER_ALIGNMENT);
-			actionRadioButton.addActionListener(new ActionChangeAction());
-			Font font = actionRadioButton.getFont();
+			Font font = this.getFont();
 			actionRadioButton.setFont(font.deriveFont(font.getSize() + 6.0F));
 			this.choiceButtonGroup.add(actionRadioButton);
 			radioButtonPanel.add(actionRadioButton);
@@ -329,7 +332,7 @@ public class InstallerPanel extends ImagePanel
 		fileEntryPanelContainer.setPreferredSize(new Dimension(InstallerPanel.CONTENT_WIDTH + 50, 96));
 		
 		JLabel lblTargetDir = new JLabel("Choose the minecraft directory for installation/extraction");
-		lblTargetDir.setBorder(new EmptyBorder(12, 12, 4, 0));
+		lblTargetDir.setBorder(new EmptyBorder(8, 12, 4, 0));
 		lblTargetDir.setForeground(FOREGROUND_COLOUR);
 		
 		this.fileEntryPanel = new JPanel();
@@ -346,7 +349,7 @@ public class InstallerPanel extends ImagePanel
 		contentPanel.add(fileEntryPanelContainer);
 		outerPanel.add(contentPanel, BorderLayout.CENTER);
 		this.add(outerPanel);
-		updateFilePath();
+		this.updateFilePath();
 	}
 	
 	protected void updateFilePath()
@@ -363,9 +366,9 @@ public class InstallerPanel extends ImagePanel
 		
 		InstallerAction action = InstallerAction.valueOf(this.choiceButtonGroup.getSelection().getActionCommand());
 		InstallerAction.refreshActions(this.targetDir, action);
-		
+
 		boolean valid = action.isPathValid(this.targetDir);
-		
+
 		InstallerModifier.refreshModifiers(valid, this.targetDir);
 		
 		if (valid)
@@ -390,6 +393,12 @@ public class InstallerPanel extends ImagePanel
 				this.dialog.invalidate();
 				this.dialog.pack();
 			}
+		}
+
+		for (Enumeration<AbstractButton> buttons = this.choiceButtonGroup.getElements(); buttons.hasMoreElements(); )
+		{
+			ActionRadioButton button = (ActionRadioButton)buttons.nextElement();
+			button.updateRadioButton();
 		}
 		
 		this.updateModifiers();

@@ -33,9 +33,21 @@ public class ExtractAction implements ActionType
 	}
 	
 	@Override
+	public String getLabelSuffix()
+	{
+		return "";
+	}
+	
+	@Override
 	public JPanel getOptionsPanel()
 	{
 		return null;
+	}
+	
+	@Override
+	public boolean isEnabled()
+	{
+		return true;
 	}
 	
 	@Override

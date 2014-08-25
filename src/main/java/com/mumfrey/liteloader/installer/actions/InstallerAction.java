@@ -12,6 +12,7 @@ import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 public enum InstallerAction implements IInstallerMonitor
 {
 	CLIENT("Install LiteLoader (recommended)", "Install a new profile to the Mojang client launcher", ClientInstallAction.class, true),
+	UPGRADE("Upgrade LiteLoader", "Upgrade a liteloader library which is already installed", ClientUpgradeAction.class, true),
 	EXTRACT("Extract LiteLoader jar", "Extract the contained jar file", ExtractAction.class, false);
 	
 	private String label;
@@ -36,7 +37,7 @@ public enum InstallerAction implements IInstallerMonitor
 	
 	public String getButtonLabel()
 	{
-		return this.label;
+		return this.label + this.action.getLabelSuffix();
 	}
 	
 	public String getTooltip()
@@ -97,6 +98,12 @@ public enum InstallerAction implements IInstallerMonitor
 			action.action.refresh(targetDir);
 		}
 	}
+	
+	public boolean isEnabled()
+	{
+		return this.action.isEnabled();
+	}
+
 
 	@Override
 	public boolean isCancelled()

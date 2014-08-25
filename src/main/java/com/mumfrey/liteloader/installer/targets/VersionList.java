@@ -12,6 +12,7 @@ public class VersionList
 	
 	private final Set<TargetVersion> allVersions = new LinkedHashSet<TargetVersion>();
 	private final Set<TargetVersion> validVersions = new LinkedHashSet<TargetVersion>();
+	private final Set<TargetVersion> liteLoaderVersions = new LinkedHashSet<TargetVersion>();
 
 	public VersionList(File versionsDir)
 	{
@@ -29,10 +30,16 @@ public class VersionList
 		return showInvalid ? this.allVersions : this.validVersions;
 	}
 	
+	public Set<TargetVersion> getLiteLoaderVersions()
+	{
+		return this.liteLoaderVersions;
+	}
+	
 	public void update()
 	{
 		this.allVersions.clear();
 		this.validVersions.clear();
+		this.liteLoaderVersions.clear();
 		TargetVersion baseVersion = new TargetVersion(VersionInfo.getMinecraftVersion());
 		this.allVersions.add(baseVersion);
 		this.validVersions.add(baseVersion);
@@ -60,10 +67,11 @@ public class VersionList
 			TargetVersion version = new TargetVersion(versionDir);
 			this.allVersions.add(version);
 			if (version.isValid()) this.validVersions.add(version);
+			if (version.isLiteLoaderVersion()) this.liteLoaderVersions.add(version);
 		}
 		catch (Exception ex)
 		{
-			ex.printStackTrace();
+			System.err.println(ex.getClass().getSimpleName() + ": " + ex.getMessage());
 		}
 	}
 }

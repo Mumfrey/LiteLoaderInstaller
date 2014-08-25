@@ -3,7 +3,7 @@
   <assemblyIdentity
       name="liteloader-installer-1.7.10-03"
       processorArchitecture="x86"
-      version="1.7.10.3"
+      version="1.7.10.4"
       type="win32"/>
   <description>LiteLoader Installer</description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">

@@ -5,8 +5,8 @@
 	<property name="ver.major" value="1" />
 	<property name="ver.minor" value="7" />
 	<property name="ver.revision" value="10" />
-	<property name="ver.release" value="-03" />
-	<property name="ver.build" value="3" />
+	<property name="ver.release" value="-04" />
+	<property name="ver.build" value="4" />
 
 	<property name="version" value="${ver.major}.${ver.minor}.${ver.revision}${ver.release}" />
 	<property name="mcversion" value="${ver.major}.${ver.minor}.${ver.revision}" />

@@ -1,7 +1,6 @@
 package com.mumfrey.liteloader.installer.actions;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
@@ -48,17 +47,9 @@ import com.mumfrey.liteloader.installer.gui.IInstallerMonitor;
 import com.mumfrey.liteloader.installer.gui.InstallerPanel;
 import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 import com.mumfrey.liteloader.installer.targets.TargetVersion;
-import com.mumfrey.liteloader.installer.targets.VersionList;
 
-public class ClientInstallAction implements ActionType
+public class ClientInstallAction extends ClientAction
 {
-	protected static final int RIGHT_MARGIN = 60;
-	protected static final int LEFT_MARGIN = 130;
-	
-	protected VersionList versionList;
-	
-	protected final JPanel optionPanel;
-	
 	protected final JComboBox cmbVersion;
 	
 	protected final JCheckBox chkAllVersions;
@@ -68,8 +59,6 @@ public class ClientInstallAction implements ActionType
 	protected boolean shownWarning = false;
 
 	protected String lastText = "";
-	
-	protected String lastError = null;
 	
 	protected class VersionCheckBoxChangeListener extends AbstractAction
 	{
@@ -95,11 +84,11 @@ public class ClientInstallAction implements ActionType
 	
 	public ClientInstallAction()
 	{
-		this.optionPanel = new JPanel();
-		this.optionPanel.setLayout(new BoxLayout(this.optionPanel, BoxLayout.Y_AXIS));
+		this.optionsPanel = new JPanel();
+		this.optionsPanel.setLayout(new BoxLayout(this.optionsPanel, BoxLayout.Y_AXIS));
 //		this.optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-		this.optionPanel.setOpaque(false);
-		this.optionPanel.setPreferredSize(new Dimension(InstallerPanel.CONTENT_WIDTH, 96));
+		this.optionsPanel.setOpaque(false);
+		this.optionsPanel.setPreferredSize(new Dimension(InstallerPanel.CONTENT_WIDTH, 96));
 		
 		JPanel targetVersionPanel = new JPanel(new BorderLayout());
 		targetVersionPanel.setOpaque(false);
@@ -120,8 +109,8 @@ public class ClientInstallAction implements ActionType
 		targetVersionPanel.add(this.cmbVersion, BorderLayout.CENTER);
 		targetVersionPanel.add(Box.createHorizontalStrut(RIGHT_MARGIN), BorderLayout.EAST);
 		
-		this.optionPanel.add(Box.createVerticalStrut(8));
-		this.optionPanel.add(targetVersionPanel);
+		this.optionsPanel.add(Box.createVerticalStrut(8));
+		this.optionsPanel.add(targetVersionPanel);
 		
 		JPanel checkBoxPanel = new JPanel(new BorderLayout());
 		checkBoxPanel.setOpaque(false);
@@ -133,8 +122,8 @@ public class ClientInstallAction implements ActionType
 		checkBoxPanel.add(Box.createHorizontalStrut(130), BorderLayout.WEST);
 		checkBoxPanel.add(this.chkAllVersions, BorderLayout.CENTER);
 		
-		this.optionPanel.add(checkBoxPanel);
-		this.optionPanel.add(Box.createVerticalStrut(8));
+		this.optionsPanel.add(checkBoxPanel);
+		this.optionsPanel.add(Box.createVerticalStrut(8));
 		
 		JPanel targetProfilePanel = new JPanel(new BorderLayout());
 		targetProfilePanel.setOpaque(false);
@@ -152,10 +141,16 @@ public class ClientInstallAction implements ActionType
 		targetProfilePanel.add(this.txtProfile, BorderLayout.CENTER);
 		targetProfilePanel.add(Box.createHorizontalStrut(RIGHT_MARGIN), BorderLayout.EAST);
 		
-		this.optionPanel.add(targetProfilePanel);
-		this.optionPanel.add(Box.createVerticalStrut(8));
+		this.optionsPanel.add(targetProfilePanel);
+		this.optionsPanel.add(Box.createVerticalStrut(8));
 		
 		this.setProfileName(VersionInfo.getProfileName());
+	}
+	
+	@Override
+	public String getLabelSuffix()
+	{
+		return "";
 	}
 	
 	private final void setProfileName(String newText)
@@ -196,11 +191,11 @@ public class ClientInstallAction implements ActionType
 			this.setProfileName(VersionInfo.getProfileName());
 		}
 	}
-
+	
 	@Override
-	public final JPanel getOptionsPanel()
+	public boolean isEnabled()
 	{
-		return this.optionPanel;
+		return true;
 	}
 	
 	@Override
@@ -214,10 +209,7 @@ public class ClientInstallAction implements ActionType
 	@Override
 	public final void refresh(File targetDir)
 	{
-		if (targetDir != null)
-		{
-			this.versionList = new VersionList(new File(targetDir, "versions"));
-		}
+		super.refresh(targetDir);
 		
 		this.cmbVersion.removeAllItems();
 		
@@ -290,35 +282,6 @@ public class ClientInstallAction implements ActionType
 		return VersionInfo.getVersionTarget(targetVersion);
 	}
 
-	private boolean validateTarget(File target) throws HeadlessException
-	{
-		if (!target.exists())
-		{
-			if (!this.setLastError("noMinecraft"))
-			{
-				this.showMessageDialog(null, "There is no minecraft installation at this location!", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			throw new CancelledException();
-		}
-		
-		return true;
-	}
-
-	private boolean validateLauncherProfiles(File launcherProfiles) throws HeadlessException
-	{
-		if (!launcherProfiles.exists())
-		{
-			if (!this.setLastError("noLauncher"))
-			{
-				this.showMessageDialog(null, "There is no minecraft launcher profile at this location, you need to run the launcher first!", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			
-			throw new CancelledException();
-		}
-		
-		return true;
-	}
-
 	private File prepareVersionDir(File target) throws HeadlessException
 	{
 		File versionRootDir = new File(target, "versions");
@@ -338,54 +301,6 @@ public class ClientInstallAction implements ActionType
 			versionTarget.mkdirs();
 		}
 		return versionTarget;
-	}
-
-	/**
-	 * @param target
-	 * @param monitor
-	 * @return
-	 * @throws HeadlessException
-	 * @throws OperationCancelledException
-	 */
-	protected boolean extractLibraries(File target, IInstallerMonitor monitor) throws HeadlessException, com.mumfrey.liteloader.installer.OperationCancelledException
-	{
-		File libraries = new File(target, "libraries");
-		File targetLibraryFile = VersionInfo.getLibraryPath(libraries);
-		if (!this.extractLibrary(targetLibraryFile, VersionInfo.getContainedFile())) return false;
-		return true;
-	}
-
-	protected final boolean extractLibrary(File targetLibraryFile, String containedFile) throws HeadlessException
-	{
-		if (!targetLibraryFile.getParentFile().mkdirs() && !targetLibraryFile.getParentFile().isDirectory())
-		{
-			if (!targetLibraryFile.getParentFile().delete())
-			{
-				if (!this.setLastError("noTarget", targetLibraryFile.getAbsolutePath()))
-				{
-					this.showMessageDialog(null, "There was a problem with the launcher version data. You will need to clear " + targetLibraryFile.getAbsolutePath() + " manually", "Error", JOptionPane.ERROR_MESSAGE);
-				}
-				return false;
-			}
-			
-			targetLibraryFile.getParentFile().mkdirs();
-		}
-		
-		try
-		{
-			this.logInfo("Extracting %s...", containedFile);
-			VersionInfo.extractFile(targetLibraryFile, containedFile);
-		}
-		catch (Exception e)
-		{
-			if (!this.setLastError("copyLibFail", containedFile))
-			{
-				this.showMessageDialog(null, "There was a problem writing the system library file", "Error", JOptionPane.ERROR_MESSAGE);
-			}
-			return false;
-		}
-		
-		return true;
 	}
 
 	private boolean writeVersionFile(List<InstallationModifier> modifiers, File versionTarget) throws HeadlessException
@@ -506,34 +421,6 @@ public class ClientInstallAction implements ActionType
 	}
 	
 	@Override
-	public final String getFailureMessage()
-	{
-		return this.lastError;
-	}
-	
-	@Override
-	public final boolean isPathValid(File targetDir)
-	{
-		if (targetDir.exists())
-		{
-			File launcherProfiles = new File(targetDir, "launcher_profiles.json");
-			return launcherProfiles.exists();
-		}
-		return false;
-	}
-	
-	@Override
-	public String getFileError(File targetDir)
-	{
-		if (targetDir.exists())
-		{
-			return "The directory is missing a launcher profile. Please run the minecraft launcher first";
-		}
-		
-		return "Invalid minecraft directory. Choose an alternative, or run the minecraft launcher to create one.";
-	}
-	
-	@Override
 	public String getSuccessMessage()
 	{
 		return String.format("<html>Successfully created new profile \"<font color=\"blue\"><b>%s</b></font>\" for version <font color=\"blue\"><b>%s</b></font> into launcher.<br>Select the new profile in the launcher in order to launch with this version.", this.getProfileName(), VersionInfo.getVersion());
@@ -554,25 +441,5 @@ public class ClientInstallAction implements ActionType
 	
 	protected void modifyFields(File target, List<JsonField> fields)
 	{
-	}
-
-	protected boolean setLastError(String messageName, Object... params)
-	{
-		return false;
-	}
-
-    protected void showMessageDialog(Component parentComponent, Object message, String title, int messageType)
-    {
-    	JOptionPane.showMessageDialog(parentComponent, message, title, messageType);
-    }
-
-	protected boolean returnFalseOnBadState()
-	{
-		return false;
-	}
-
-	protected void logInfo(String format, Object... args)
-	{
-		System.out.println(String.format(format, args));
 	}
 }

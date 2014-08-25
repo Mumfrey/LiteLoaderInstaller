@@ -32,6 +32,7 @@ public class TargetVersion implements InstallationModifier
 
 	private final String name;
 	private final boolean valid;
+	private final boolean liteloader;
 	private boolean vanilla;
 	private final ActionModifier modifier;
 	private final String minecraftArguments;
@@ -58,7 +59,8 @@ public class TargetVersion implements InstallationModifier
 		}
 		
 		this.name = name;
-		this.valid = TargetVersion.isValid(name);
+		this.valid = TargetVersion.isValid(name, false);
+		this.liteloader = TargetVersion.isValid(name, true);
 		this.vanilla = false;
 		this.modifier = null;
 		this.minecraftArguments = TargetVersion.getMinecraftArguments(versionData);
@@ -72,7 +74,8 @@ public class TargetVersion implements InstallationModifier
 	public TargetVersion(String name, ActionModifier modifier)
 	{
 		this.name = name;
-		this.valid = TargetVersion.isValid(name);
+		this.valid = TargetVersion.isValid(name, false);
+		this.liteloader = TargetVersion.isValid(name, true);
 		this.vanilla = true;
 		this.modifier = modifier;
 		this.minecraftArguments = null;
@@ -142,6 +145,11 @@ public class TargetVersion implements InstallationModifier
 		return this.valid;
 	}
 	
+	public boolean isLiteLoaderVersion()
+	{
+		return this.liteloader;
+	}
+	
 	public ActionModifier getModifier()
 	{
 		return this.modifier;
@@ -152,9 +160,9 @@ public class TargetVersion implements InstallationModifier
 		return this.vanilla;
 	}
 
-	private static boolean isValid(String name)
+	private static boolean isValid(String name, boolean liteloader)
 	{
-		if (name.toLowerCase().contains("liteloader")) return false;
+		if (name.toLowerCase().contains("liteloader") != liteloader) return false;
 		String minecraftVersion = VersionInfo.getMinecraftVersion();
 		return name.equals(minecraftVersion) || name.startsWith(minecraftVersion + "-");
 	}
