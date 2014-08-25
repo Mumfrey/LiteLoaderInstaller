@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Installer">
+	<property name="mcp.dir" location="../../.." />
+
+	<target name="create_run_jar">
+		<jar destfile="${mcp.dir}/build/dist/liteloader-installer-1.6.2-04.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="cpw.mods.fml.installer.SimpleInstaller"/>
+				<attribute name="Class-Path" value="."/>
+			</manifest>
+			<fileset dir="${mcp.dir}/eclipse/Installer/bin"/>
+			<zipfileset excludes="META-INF/*.SF" src="${mcp.dir}/eclipse/Installer/lib/guava-14.0.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="${mcp.dir}/eclipse/Installer/lib/argo-3.7.jar"/>
+		</jar>
+	</target>
+</project>
