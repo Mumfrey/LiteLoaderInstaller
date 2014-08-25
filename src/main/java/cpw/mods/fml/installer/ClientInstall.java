@@ -3,6 +3,7 @@ package cpw.mods.fml.installer;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -127,10 +128,12 @@ public class ClientInstall implements ActionType {
         }
 
 
-        JsonField[] fields = new JsonField[] {
-            JsonNodeFactories.field("name", JsonNodeFactories.string(VersionInfo.getProfileName())),
-            JsonNodeFactories.field("lastVersionId", JsonNodeFactories.string(VersionInfo.getVersionTarget())),
-        };
+        List<JsonField> fields = new ArrayList<JsonField>();
+        fields.add(JsonNodeFactories.field("name", JsonNodeFactories.string(VersionInfo.getProfileName())));
+        fields.add(JsonNodeFactories.field("lastVersionId", JsonNodeFactories.string(VersionInfo.getVersionTarget())));
+        
+        for (ActionModifier modifier : modifiers)
+            modifier.modifyFields(fields);
 
         HashMap<JsonStringNode, JsonNode> profileCopy = Maps.newHashMap(jsonProfileData.getNode("profiles").getFields());
         HashMap<JsonStringNode, JsonNode> rootCopy = Maps.newHashMap(jsonProfileData.getFields());

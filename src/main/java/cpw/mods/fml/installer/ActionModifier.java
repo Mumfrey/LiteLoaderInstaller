@@ -1,7 +1,9 @@
 package cpw.mods.fml.installer;
 
 import java.io.File;
+import java.util.List;
 
+import argo.jdom.JsonField;
 import argo.jdom.JsonRootNode;
 
 public interface ActionModifier {
@@ -17,4 +19,8 @@ public interface ActionModifier {
     void refresh(boolean valid, File targetDir);
     
     boolean isAvailable();
+
+    void prepare(Object object);
+
+    void modifyFields(List<JsonField> fields);
 }

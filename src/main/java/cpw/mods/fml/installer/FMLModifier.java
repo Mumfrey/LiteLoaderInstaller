@@ -9,7 +9,7 @@ public class FMLModifier extends ForgeModifier
 {
     public FMLModifier()
     {
-        super("Forge ModLoader", "6.4.0.752");
+        super("Forge ModLoader", "7.2.18.797");
     }
     
     @Override
@@ -37,7 +37,7 @@ public class FMLModifier extends ForgeModifier
     protected void addLibraries(List<JsonNode> libraries)
     {
         JsonNode forgeNode = JsonNodeBuilders.anObjectBuilder()
-            .withField("name", JsonNodeBuilders.aStringBuilder("cpw.mods:fml:" + this.version))
+            .withField("name", JsonNodeBuilders.aStringBuilder("cpw.mods:fml:" + this.versionPrefix + this.version))
             .withField("url", JsonNodeBuilders.aStringBuilder("http://files.minecraftforge.net/maven/"))
             .build();
         libraries.add(forgeNode);

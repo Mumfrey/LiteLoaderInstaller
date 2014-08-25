@@ -24,6 +24,10 @@ public abstract class CascadeModifier implements ActionModifier
     
     private static Set<String> tweaks = new HashSet<String>();
     
+    protected String versionPrefix = VersionInfo.getMinecraftVersion() + "-";
+    
+    protected List<String> validVersions = new ArrayList<String>();
+    
     @Override
     public JsonRootNode modifyVersion(JsonRootNode versionJson)
     {
@@ -77,13 +81,37 @@ public abstract class CascadeModifier implements ActionModifier
         
         return versionJson;
     }
+    
+    @Override
+    public void modifyFields(List<JsonField> fields)
+    {
+    }
 
     protected abstract String getFailureMessage();
 
     protected abstract String getTweakClass();
 
     protected abstract void addLibraries(List<JsonNode> libraries);
-
+    
+    public boolean hasMultipleVersions()
+    {
+        return this.validVersions.size() > 1;        
+    }
+    
+    public List<String> getValidVersions()
+    {
+        return this.validVersions;
+    }
+    
+    public List<String> getOtherVersions()
+    {
+        List<String> validVersions = new ArrayList<String>(this.validVersions);
+        validVersions.remove(this.getLatestVersion());
+        return validVersions;
+    }
+    
+    public abstract String getLatestVersion();
+    
     /**
      * @param targetDir
      * @param libPath
@@ -91,6 +119,8 @@ public abstract class CascadeModifier implements ActionModifier
      */
     protected String getLatestLibraryVersion(File targetDir, String libPath)
     {
+        this.validVersions.clear();
+        
         File libraries = new File(targetDir, "libraries");
         
         if (libraries.exists() && libraries.isDirectory())
@@ -103,9 +133,14 @@ public abstract class CascadeModifier implements ActionModifier
                 
                 for (File versionFolder : libFolder.listFiles())
                 {
-                    if (versionFolder.isDirectory())
+                    if (versionFolder.isDirectory() && versionFolder.getName().startsWith(this.versionPrefix))
                     {
-                        maxVersion = getMaxVersion(maxVersion, versionFolder.getName());
+                        String libVersion = versionFolder.getName().substring(this.versionPrefix.length());
+                        if (this.isValidLibrary(versionFolder.getName(), libVersion))
+                        {
+                            this.validVersions.add(libVersion);
+                            maxVersion = this.getMaxVersion(maxVersion, libVersion);
+                        }
                     }
                 }
                 
@@ -119,33 +154,7 @@ public abstract class CascadeModifier implements ActionModifier
         return null;
     }
 
-    protected String getMaxVersion(String maxVersion, String version)
-    {
-        Matcher maxVersionPatternMatcher = versionPattern.matcher(maxVersion);
-        Matcher versionPatternMatcher = versionPattern.matcher(version);
-        
-        if (versionPatternMatcher.matches())
-        {
-            if (!maxVersionPatternMatcher.matches()) return version;
-            
-            for (int part = 1; part < 5; part++)
-            {
-                String winner = compare(maxVersion, version, maxVersionPatternMatcher.group(part), versionPatternMatcher.group(part));
-                if (winner != null) return winner;
-            }
-        }
-        
-        return maxVersion;
-    }
-    
-    protected String compare(String maxVersion, String version, String cmpMax, String cmpVer) throws NumberFormatException
-    {
-        int maxVersionNum    = Integer.parseInt(cmpMax);
-        int versionNum       = Integer.parseInt(cmpVer);
+    protected abstract boolean isValidLibrary(String name, String libVersion);
 
-        if (versionNum > maxVersionNum) return version;
-        if (maxVersionNum > versionNum) return maxVersion;
-        
-        return null;
-    }
+    protected abstract String getMaxVersion(String maxVersion, String version);
 }

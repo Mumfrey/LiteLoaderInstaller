@@ -6,7 +6,8 @@ import com.google.common.base.Throwables;
 
 public enum InstallerModifier {
     FORGE(ForgeModifier.class),
-    FML(FMLModifier.class);
+    FML(FMLModifier.class),
+    OPTIFINE(OptifineModifier.class);
 
     private ActionModifier modifier;
 
