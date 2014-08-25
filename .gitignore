@@ -1,7 +1,9 @@
 bin/
+lib/
 .gradle/
 repos/
 build/
 .classpath
 .project
 .settings/
+liteloader_installer*.psd
