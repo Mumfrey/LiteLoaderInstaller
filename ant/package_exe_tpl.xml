@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>..\..\..\build\dist\liteloader-installer-${version}.jar</jar>
-  <outfile>..\..\..\build\dist\liteloader-installer-${version}.exe</outfile>
+  <jar>..\..\..\build\dist\${filename}${version}.jar</jar>
+  <outfile>..\..\..\build\dist\${filename}${version}.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -29,6 +29,6 @@
     <productName>LiteLoader</productName>
     <companyName></companyName>
     <internalName>LiteLoader</internalName>
-    <originalFilename>liteloader-installer-${version}.exe</originalFilename>
+    <originalFilename>${filename}${version}.exe</originalFilename>
   </versionInfo>
 </launch4jConfig>

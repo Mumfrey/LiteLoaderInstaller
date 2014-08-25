@@ -3,19 +3,21 @@
 	<property name="mcp.dir" location="../../.." />
 	
 	<property name="ver.major" value="1" />
-	<property name="ver.minor" value="6" />
-	<property name="ver.revision" value="4" />
-	<property name="ver.release" value="-01" />
-	<property name="ver.build" value="1" />
+	<property name="ver.minor" value="7" />
+	<property name="ver.revision" value="2" />
+	<property name="ver.release" value="-04" />
+	<property name="ver.build" value="4" />
 
 	<property name="version" value="${ver.major}.${ver.minor}.${ver.revision}${ver.release}" />
 	<property name="mcversion" value="${ver.major}.${ver.minor}.${ver.revision}" />
 	<property name="msversion" value="${ver.major}.${ver.minor}.${ver.revision}.${ver.build}" />
+	
+	<property name="filename" value="liteloader-installer-" />
 
     <target name="pre">
     	<delete verbose="true">
-    		<fileset file="${mcp.dir}/build/dist/liteloader-installer-${version}.jar" />
-    		<fileset file="${mcp.dir}/build/dist/liteloader-installer-${version}.exe" />
+    		<fileset file="${mcp.dir}/build/dist/${filename}${version}.jar" />
+    		<fileset file="${mcp.dir}/build/dist/${filename}${version}.exe" />
     	</delete>
     </target>
 
@@ -31,7 +33,7 @@
     </target>
 	
 	<target name="create_run_jar" depends="prep">
-		<jar destfile="${mcp.dir}/build/dist/liteloader-installer-${version}.jar" filesetmanifest="mergewithoutmain">
+		<jar destfile="${mcp.dir}/build/dist/${filename}${version}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="cpw.mods.fml.installer.SimpleInstaller"/>
 				<attribute name="Class-Path" value="."/>
