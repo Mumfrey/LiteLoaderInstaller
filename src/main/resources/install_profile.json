@@ -1,197 +1,43 @@
 {
   "install": {
-    "profileName":"LiteLoader 1.7.2",
-    "target":"1.7.2-LiteLoader1.7.2",
-    "path":"com.mumfrey:liteloader:1.7.2",
-    "version":"LiteLoader 1.7.2_04",
-    "filePath":"liteloader-1.7.2.jar",
-    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.7.2.",
-    "minecraft":"1.7.2",
-    "title":"LiteLoader Installer BETA RELEASE",
+    "profileName":"LiteLoader 1.7.10",
+    "target":"1.7.10-LiteLoader1.7.10",
+    "path":"com.mumfrey:liteloader:1.7.10",
+    "version":"1.7.10",
+    "filePath":"liteloader-1.7.10.jar",
+    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.7.10_03.",
+    "minecraft":"1.7.10",
+    "title":"LiteLoader Installer",
     "logo":"/liteloader_installer_logo.png",
-    "icon":"/liteloader_installer_icon.png"
+    "bg":"/liteloader_installer_bg.jpg",
+    "icon":"/liteloader_installer_icon.png",
+    "tweakClass":"com.mumfrey.liteloader.launch.LiteLoaderTweaker",
+    "launcherProfilesJson":"launcher_profiles.json"
   },
   "versionInfo": {
-      "id": "1.7.2-LiteLoader1.7.2",
-      "time": "2013-10-25T14:00:00+01:00",
-      "releaseTime": "2013-10-25T14:00:00+01:00",
-      "type": "release",
-      "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${game_assets} --uuid ${auth_uuid} --accessToken ${auth_access_token} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
-        "libraries": [
-        {
-          "name": "com.mumfrey:liteloader:1.7.2",
-          "url": "http://dl.liteloader.com/versions/"
-        },
-        {
-          "name": "net.minecraft:launchwrapper:1.9"
-        },
-        {
-          "name": "org.ow2.asm:asm-all:4.1"
-        },
-        {
-          "name": "java3d:vecmath:1.3.1"
-        },
-        {
-          "name": "net.sf.trove4j:trove4j:3.0.3"
-        },
-        {
-          "name": "com.ibm.icu:icu4j-core-mojang:51.2"
-        },
-        {
-          "name": "net.sf.jopt-simple:jopt-simple:4.5"
-        },
-        {
-          "name": "com.paulscode:codecjorbis:20101023"
-        },
-        {
-          "name": "com.paulscode:codecwav:20101023"
-        },
-        {
-          "name": "com.paulscode:libraryjavasound:20101123"
-        },
-        {
-          "name": "com.paulscode:librarylwjglopenal:20100824"
-        },
-        {
-          "name": "com.paulscode:soundsystem:20120107"
-        },
-        {
-          "name": "io.netty:netty-all:4.0.10.Final"
-        },
-        {
-          "name": "com.google.guava:guava:15.0"
-        },
-        {
-          "name": "org.apache.commons:commons-lang3:3.1"
-        },
-        {
-          "name": "commons-io:commons-io:2.4"
-        },
-        {
-          "name": "net.java.jinput:jinput:2.0.5"
-        },
-        {
-          "name": "net.java.jutils:jutils:1.0.0"
-        },
-        {
-          "name": "com.google.code.gson:gson:2.2.4"
-        },
-        {
-          "name": "com.mojang:authlib:1.3"
-        },
-        {
-          "name": "org.apache.logging.log4j:log4j-api:2.0-beta9"
-        },
-        {
-          "name": "org.apache.logging.log4j:log4j-core:2.0-beta9"
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl:2.9.0",
-          "rules": [
-            {
-              "action": "allow"
-            },
-            {
-              "action": "disallow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ]
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl_util:2.9.0",
-          "rules": [
-            {
-              "action": "allow"
-            },
-            {
-              "action": "disallow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ]
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl-platform:2.9.0",
-          "rules": [
-            {
-              "action": "allow"
-            },
-            {
-              "action": "disallow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ],
-          "natives": {
-            "linux": "natives-linux",
-            "windows": "natives-windows"
-          },
-          "extract": {
-            "exclude": [
-              "META-INF/"
-            ]
-          }
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl:2.9.1-nightly-20131017",
-          "rules": [
-            {
-              "action": "allow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ]
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl_util:2.9.1-nightly-20131017",
-          "rules": [
-            {
-              "action": "allow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ]
-        },
-        {
-          "name": "org.lwjgl.lwjgl:lwjgl-platform:2.9.1-nightly-20131017",
-          "rules": [
-            {
-              "action": "allow",
-              "os": {
-                "name": "osx"
-              }
-            }
-          ],
-          "natives": {
-            "osx": "natives-osx"
-          },
-          "extract": {
-            "exclude": [
-              "META-INF/"
-            ]
-          }
-        },
-        {
-          "name": "net.java.jinput:jinput-platform:2.0.5",
-          "natives": {
-            "linux": "natives-linux",
-            "windows": "natives-windows",
-            "osx": "natives-osx"
-          },
-          "extract": {
-            "exclude": [
-              "META-INF/"
-            ]
-          }
-        }
-      ],
-      "mainClass": "net.minecraft.launchwrapper.Launch",
-      "minimumLauncherVersion": 9
+    "id": "1.7.10-LiteLoader1.7.10",
+    "time": "2014-05-14T18:29:23+01:00",
+    "releaseTime": "2014-05-14T18:29:23+01:00",
+    "type": "release",
+    "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userProperties ${user_properties} --userType ${user_type} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
+    "libraries": [
+      {
+        "name": "com.mumfrey:liteloader:1.7.10",
+        "url": "http://dl.liteloader.com/versions/"
+      },
+      {
+        "name": "net.minecraft:launchwrapper:1.9"
+      },
+      {
+        "name": "org.ow2.asm:asm-all:4.1",
+      },
+      {
+        "name": "com.google.guava:guava:16.0"
+      }
+    ],
+    "mainClass":"net.minecraft.launchwrapper.Launch",
+    "minimumLauncherVersion": 16,
+    "inheritsFrom": "1.7.10",
+    "jar": "1.7.10"
   }
 }
