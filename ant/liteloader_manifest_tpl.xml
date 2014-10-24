@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <assembly xmlns="urn:schemas-microsoft-com:asm.v1" manifestVersion="1.0">
   <assemblyIdentity
-      name="liteloader-installer-1.7.10-03"
+      name="liteloader-installer-${filename}${version}"
       processorArchitecture="x86"
-      version="1.7.10.4"
+      version="${msversion}"
       type="win32"/>
   <description>LiteLoader Installer</description>
   <trustInfo xmlns="urn:schemas-microsoft-com:asm.v3">

@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>..\..\..\build\dist\${filename}${version}.jar</jar>
-  <outfile>..\..\..\build\dist\${filename}${version}.exe</outfile>
+  <jar>..\${dist.dir}\${filename}${version}.jar</jar>
+  <outfile>..\${dist.dir}\${filename}${version}.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -11,7 +11,7 @@
   <supportUrl></supportUrl>
   <customProcName>false</customProcName>
   <stayAlive>false</stayAlive>
-  <manifest>liteloader.manifest</manifest>
+  <manifest>${temp.dir}\liteloader.manifest</manifest>
   <icon>..\liteloader_installer_icon.ico</icon>
   <jre>
     <path></path>

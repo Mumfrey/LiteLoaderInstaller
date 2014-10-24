@@ -1,52 +1,101 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<project default="create_exe" name="Create Runnable Jar for Project Installer">
+<project default="build" name="Create Runnable Jar for Project Installer" xmlns:ivy="antlib:org.apache.ivy.ant">
 	<property name="mcp.dir" location="../../.." />
 	
 	<property name="ver.major" value="1" />
-	<property name="ver.minor" value="7" />
-	<property name="ver.revision" value="10" />
-	<property name="ver.release" value="-04" />
-	<property name="ver.build" value="4" />
+	<property name="ver.minor" value="8" />
+	<property name="ver.revision" value="0" />
+	<property name="ver.release" value="-00" />
+	<property name="ver.build" value="0" />
 
 	<property name="version" value="${ver.major}.${ver.minor}.${ver.revision}${ver.release}" />
 	<property name="mcversion" value="${ver.major}.${ver.minor}.${ver.revision}" />
 	<property name="msversion" value="${ver.major}.${ver.minor}.${ver.revision}.${ver.build}" />
 	
 	<property name="filename" value="liteloader-installer-" />
+	
+	<property name="temp.dir" location="./temp" />
+	<property name="lib.dir" location="./lib" />
+	<property name="src.dir" location="../src/main/java" />
+	<property name="res.dir" location="../src/main/resources" />
+	<property name="bin.dir" location="${temp.dir}/bin" />
+	<property name="upstream.dir" location="../artefacts" />
 
-    <target name="pre">
-    	<delete verbose="true">
-    		<fileset file="${mcp.dir}/build/dist/${filename}${version}.jar" />
-    		<fileset file="${mcp.dir}/build/dist/${filename}${version}.exe" />
-    	</delete>
-    </target>
+	<path id="classpath">
+		<fileset dir="${ivy.lib.dir}" id="ivylibs">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="build">
+		<ivy:retrieve sync="true" />
+		<property name="dist.dir" value="..\..\..\build\dist" />
+		<antcall target="create_exe" />
+	</target>
+
+	<target name="jenkins">
+		<ivy:retrieve sync="true" />
+		<property name="dist.dir" value="./dist" />
+		
+		<copy todir="${res.dir}" verbose="true" overwrite="true">
+            <fileset dir="${upstream.dir}">
+                <exclude name="**-javadoc.jar" />
+                <exclude name="**-sources.jar" />
+                <exclude name="**-mcpnames.jar" />
+            </fileset>
+            <mapper type="regexp" from="(.*)-SNAPSHOT(.*)" to="\1\2" />
+		</copy>
+		<antcall target="create_exe" />
+	</target>
+
+	<target name="pre">
+		
+		<delete verbose="true" failonerror="false">
+			<fileset file="${dist.dir}/${filename}${version}.jar" />
+			<fileset file="${dist.dir}/${filename}${version}.exe" />
+		</delete>
+		
+		<delete dir="${temp.dir}" />
+		
+		<mkdir dir="${temp.dir}" />
+		<mkdir dir="${bin.dir}" />
+		<mkdir dir="${dist.dir}" />
+	</target>
 
 	<target name="prep" depends="pre">
-        <concat destfile="package_exe.xml" append="false">
-            <fileset file="package_exe_tpl.xml" />
-            <filterchain><expandproperties /></filterchain>
-        </concat>
-        <concat destfile="liteloader.manifest" append="false">
-            <fileset file="../liteloader.manifest" />
-            <filterchain><expandproperties /></filterchain>
-        </concat>
-    </target>
+		<concat destfile="${temp.dir}/package_exe.xml" append="false">
+			<fileset file="package_exe_tpl.xml" />
+			<filterchain><expandproperties /></filterchain>
+		</concat>
+		<concat destfile="${temp.dir}/liteloader.manifest" append="false">
+			<fileset file="liteloader_manifest_tpl.xml" />
+			<filterchain><expandproperties /></filterchain>
+		</concat>
+	</target>
 	
-	<target name="create_run_jar" depends="prep">
-		<jar destfile="${mcp.dir}/build/dist/${filename}${version}.jar" filesetmanifest="mergewithoutmain">
+	<target name="compile" depends="prep">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+	
+	<target name="create_jar" depends="compile">
+		
+		<jar destfile="${dist.dir}/${filename}${version}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="com.mumfrey.liteloader.installer.Installer"/>
 				<attribute name="Class-Path" value="."/>
 			</manifest>
-			<fileset dir="${mcp.dir}/eclipse/Installer/bin"/>
-			<zipfileset excludes="META-INF/*.SF" src="${mcp.dir}/eclipse/Installer/lib/guava-14.0.jar"/>
-			<zipfileset excludes="META-INF/*.SF" src="${mcp.dir}/eclipse/Installer/lib/argo-3.7.jar"/>
+			<fileset dir="${bin.dir}"/>
+			<fileset dir="${res.dir}"/>
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/guava-15.0.jar"/>
+			<zipfileset excludes="META-INF/*.SF" src="${lib.dir}/argo-3.7.jar"/>
 		</jar>
 	</target>
 	
-    <target name="create_exe" depends="create_run_jar">
-        <java jar="${mcp.dir}/eclipse/Installer/ant/launch4j/launch4j.jar" dir="${mcp.dir}/eclipse/Installer/ant/launch4j" fork="true">
-            <arg value="..\\package_exe.xml"/>
-        </java>
-    </target>
+	<target name="create_exe" depends="create_jar">
+		<java jar="launch4j/launch4j.jar" dir="launch4j" fork="true">
+			<arg value="${temp.dir}/package_exe.xml"/>
+		</java>
+	</target>
 </project>
