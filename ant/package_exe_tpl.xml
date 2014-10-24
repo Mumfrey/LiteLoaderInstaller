@@ -1,8 +1,8 @@
 <launch4jConfig>
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
-  <jar>..\${dist.dir}\${filename}${version}.jar</jar>
-  <outfile>..\${dist.dir}\${filename}${version}.exe</outfile>
+  <jar>..\${dist.dir}\${artefact}.jar</jar>
+  <outfile>..\${dist.dir}\${artefact}.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir></chdir>
@@ -29,6 +29,6 @@
     <productName>LiteLoader</productName>
     <companyName></companyName>
     <internalName>LiteLoader</internalName>
-    <originalFilename>${filename}${version}.exe</originalFilename>
+    <originalFilename>${artefact}.exe</originalFilename>
   </versionInfo>
 </launch4jConfig>
