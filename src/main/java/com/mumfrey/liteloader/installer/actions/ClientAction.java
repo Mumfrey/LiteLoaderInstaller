@@ -7,7 +7,6 @@ import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.mumfrey.liteloader.installer.OperationCancelledException;
 import com.mumfrey.liteloader.installer.VersionInfo;
 import com.mumfrey.liteloader.installer.gui.CancelledException;
 import com.mumfrey.liteloader.installer.gui.IInstallerMonitor;

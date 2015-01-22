@@ -1,7 +1,6 @@
 package com.mumfrey.liteloader.installer;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Locale;
 
 import javax.swing.JOptionPane;
@@ -15,7 +14,7 @@ public class Installer
 	 * @param args
 	 * @throws IOException
 	 */
-	public static void main(String[] args) throws IOException
+	public static void main(String[] args)
 	{
 		try
 		{
