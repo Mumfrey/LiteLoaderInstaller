@@ -76,7 +76,7 @@
 	</target>
 	
 	<target name="compile" depends="prep">
-		<javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false">
+		<javac srcdir="${src.dir}" destdir="${bin.dir}" includeantruntime="false" source="1.6" target="1.6">
 			<classpath refid="classpath" />
 		</javac>
 	</target>
