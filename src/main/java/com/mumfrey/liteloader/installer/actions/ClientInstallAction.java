@@ -45,6 +45,7 @@ import com.mumfrey.liteloader.installer.VersionInfo;
 import com.mumfrey.liteloader.installer.gui.CancelledException;
 import com.mumfrey.liteloader.installer.gui.IInstallerMonitor;
 import com.mumfrey.liteloader.installer.gui.InstallerPanel;
+import com.mumfrey.liteloader.installer.gui.InstallerPanel.Metrics;
 import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 import com.mumfrey.liteloader.installer.targets.TargetVersion;
 
@@ -84,11 +85,13 @@ public class ClientInstallAction extends ClientAction
 	
 	public ClientInstallAction()
 	{
+		Metrics metrics = InstallerPanel.getInstance().getMetrics();
+		
 		this.optionsPanel = new JPanel();
 		this.optionsPanel.setLayout(new BoxLayout(this.optionsPanel, BoxLayout.Y_AXIS));
 //		this.optionPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.optionsPanel.setOpaque(false);
-		this.optionsPanel.setPreferredSize(new Dimension(InstallerPanel.CONTENT_WIDTH, 96));
+		this.optionsPanel.setPreferredSize(new Dimension(metrics.contentWidth, 96));
 		
 		JPanel targetVersionPanel = new JPanel(new BorderLayout());
 		targetVersionPanel.setOpaque(false);

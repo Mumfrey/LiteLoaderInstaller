@@ -55,7 +55,7 @@ public class Installer
 			return;
 		}
 		
-		InstallerPanel panel = new InstallerPanel(targetDir);
+		InstallerPanel panel = new InstallerPanel(false, targetDir);
 		try
 		{
 			while (!panel.run());
