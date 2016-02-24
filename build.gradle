@@ -1,0 +1,90 @@
+buildscript {
+    repositories {
+        maven {
+            url 'https://plugins.gradle.org/m2/'
+        }
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.0'
+        classpath 'gradle.plugin.edu.sc.seis.gradle:launch4j:1.6.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'edu.sc.seis.launch4j'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+// launch4j dependsOn doesn't work
+defaultTasks 'prepareManifest', 'build', 'launch4j'
+
+group               = 'com.mumfrey'
+version             = "${project.verMajor}.${project.verMinor}.${project.verRevision}${project.verRelease}"
+ext.mcversion       = "${project.verMajor}.${project.verMinor}.${project.verRevision}"
+ext.msversion       =  "${project.verMajor}.${project.verMinor}.${project.verRevision}.${project.verBuild}"
+archivesBaseName    = 'liteloader-installer'
+targetCompatibility = '1.6'
+sourceCompatibility = '1.6'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'com.google.guava:guava:17.0'
+    compile 'net.sourceforge.argo:argo:3.7'
+}
+
+// resolve problem with shadowJar
+task wrapJar(type: Jar) {
+    baseName = 'artefacts-wrapped'
+    entryCompression ZipEntryCompression.STORED
+    from file(Eval.x(project, project.upstreamJar))
+    rename '.*', "liteloader-${mcversion}.jar"
+    destinationDir = temporaryDir
+}
+
+jar {
+    destinationDir = temporaryDir
+    classifier = "core"
+}
+
+shadowJar {
+    from wrapJar
+    classifier = 'SNAPSHOT'
+}
+
+task prepareManifest(type: Copy) {
+    from 'launch4j/liteloader_installer_manifest.xml'
+    into tasks.launch4j.temporaryDir
+    expand(
+        artefact:  project.sxsname,
+        msversion: project.msversion
+    )
+}
+
+launch4j {
+    copyConfigurable = project.tasks.shadowJar.outputs.files
+    jar              = 'lib/' + project.tasks.shadowJar.archiveName
+    icon             = "${projectDir}/launch4j/liteloader_installer_icon.ico"
+    manifest         = "${tasks.launch4j.temporaryDir}/liteloader_installer_manifest.xml"
+    outfile          = '../libs/' + (tasks.shadowJar.archiveName - ".jar" + ".exe")
+    version          = project.msversion
+    internalName     = project.sxsname
+    productName      = "LiteLoader"
+    description      = "LiteLoader Installer for Minecraft ${project.mcversion} release {project.verRelease}"
+    copyright        = "Copyright (C) 2013-15 Adam Mummery-Smith"
+}
+
+jar.manifest.mainAttributes (
+    "Main-Class":             "com.mumfrey.liteloader.installer.Installer",
+    "Class-Path":             ".",
+    "Built-By":               System.properties['user.name'],
+    "Created-By":             System.properties['java.vm.version'] + " (" + System.properties['java.vm.vendor'] + ")",
+    "Implementation-Title":   name,
+    "Implementation-Version": version
+)
+
+artifacts {
+    archives jar
+    archives shadowJar
+}

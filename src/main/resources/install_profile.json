@@ -1,12 +1,12 @@
 {
   "install": {
-    "profileName":"LiteLoader 1.8",
-    "target":"1.8-LiteLoader1.8",
+    "profileName":"LiteLoader 1.8.9",
+    "target":"1.8.9-LiteLoader1.8.9",
     "path":"com.mumfrey:liteloader:1.8",
-    "version":"1.8",
-    "filePath":"liteloader-1.8.jar",
-    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.8.",
-    "minecraft":"1.8",
+    "version":"1.8.9",
+    "filePath":"liteloader-1.8.9.jar",
+    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.8.9.",
+    "minecraft":"1.8.9",
     "title":"LiteLoader Installer",
     "logo":"/liteloader_installer_logo.png",
     "bg":"/liteloader_installer_bg.jpg",
@@ -15,8 +15,8 @@
     "launcherProfilesJson":"launcher_profiles.json"
   },
   "versionInfo": {
-    "id": "1.8-LiteLoader1.8",
-    "time": "2014-05-14T18:29:23+01:00",
+    "id": "1.8.9-LiteLoader1.8.9",
+    "time": "2015-07-27T18:29:23+01:00",
     "releaseTime": "2014-05-14T18:29:23+01:00",
     "type": "release",
     "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userProperties ${user_properties} --userType ${user_type} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
@@ -26,7 +26,7 @@
         "url": "http://dl.liteloader.com/versions/"
       },
       {
-        "name": "net.minecraft:launchwrapper:1.11"
+        "name": "net.minecraft:launchwrapper:1.12"
       },
       {
         "name": "org.ow2.asm:asm-all:5.0.3"
@@ -34,7 +34,7 @@
     ],
     "mainClass":"net.minecraft.launchwrapper.Launch",
     "minimumLauncherVersion": 16,
-    "inheritsFrom": "1.8",
-    "jar": "1.8"
+    "inheritsFrom": "1.8.9",
+    "jar": "1.8.9"
   }
 }

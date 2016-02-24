@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
-<ivysettings>
-    <settings defaultResolver="liteloaderinstaller" />
-    <resolvers>
-        <chain name="liteloaderinstaller">
-	        <ibiblio name="m2" m2compatible="true" />
-        </chain>
-    </resolvers>
-</ivysettings>
