@@ -2,9 +2,9 @@
   "install": {
     "profileName":"LiteLoader 1.8.9",
     "target":"1.8.9-LiteLoader1.8.9",
-    "path":"com.mumfrey:liteloader:1.8",
+    "path":"com.mumfrey:liteloader:1.8.9-SNAPSHOT",
     "version":"1.8.9",
-    "filePath":"liteloader-1.8.9.jar",
+    "filePath":"liteloader-1.8.9-SNAPSHOT-release.jar",
     "welcome":"Welcome to the LiteLoader installer for Minecraft 1.8.9.",
     "minecraft":"1.8.9",
     "title":"LiteLoader Installer",
@@ -22,7 +22,7 @@
     "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userProperties ${user_properties} --userType ${user_type} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
     "libraries": [
       {
-        "name": "com.mumfrey:liteloader:1.8",
+        "name": "com.mumfrey:liteloader:1.8.9-SNAPSHOT",
         "url": "http://dl.liteloader.com/versions/"
       },
       {

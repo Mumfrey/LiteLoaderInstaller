@@ -39,7 +39,7 @@ task wrapJar(type: Jar) {
     baseName = 'artefacts-wrapped'
     entryCompression ZipEntryCompression.STORED
     from file(Eval.x(project, project.upstreamJar))
-    rename '.*', "liteloader-${mcversion}.jar"
+//    rename '.*', "liteloader-${mcversion}.jar"
     destinationDir = temporaryDir
 }
 
