@@ -19,7 +19,7 @@ defaultTasks 'prepareManifest', 'build', 'launch4j'
 
 group               = 'com.mumfrey'
 version             = "${project.verMajor}.${project.verMinor}.${project.verRevision}${project.verRelease}"
-ext.mcversion       = "${project.verMajor}.${project.verMinor}.${project.verRevision}"
+ext.mcversion       = "${project.verMajor}.${project.verMinor}" + (project.verRevision == "0" ? "" : ".${project.verRevision}")
 ext.msversion       =  "${project.verMajor}.${project.verMinor}.${project.verRevision}.${project.verBuild}"
 archivesBaseName    = 'liteloader-installer'
 targetCompatibility = '1.6'
@@ -39,7 +39,6 @@ task wrapJar(type: Jar) {
     baseName = 'artefacts-wrapped'
     entryCompression ZipEntryCompression.STORED
     from file(Eval.x(project, project.upstreamJar))
-//    rename '.*', "liteloader-${mcversion}.jar"
     destinationDir = temporaryDir
 }
 
