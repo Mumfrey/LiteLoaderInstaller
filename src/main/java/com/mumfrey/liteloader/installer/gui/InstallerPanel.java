@@ -412,8 +412,14 @@ public class InstallerPanel extends ImagePanel
 		optionPane.setOpaque(false);
 		optionPane.setBorder(new EmptyBorder(0, 0, 0, 0));
 		
-		((JPanel)optionPane.getComponent(1)).setBorder(new EmptyBorder(10, 0, 10, 0));
-		((JComponent)optionPane.getComponent(1)).setOpaque(false);
+		try
+        {
+            this.prettify(optionPane);
+        }
+        catch (Exception ex1)
+        {
+            ex1.printStackTrace();
+        }
 		
 		this.container = optionPane.createDialog(null, VersionInfo.getDialogTitle());
 		this.container.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
@@ -465,6 +471,38 @@ public class InstallerPanel extends ImagePanel
 		this.container.dispose();
 		return true;
 	}
+
+    protected void prettify(ImageOptionPane optionPane)
+    {
+        JPanel buttonBar = null;
+        for (int id = 0; id < optionPane.getComponentCount(); id++)
+        {
+            Component component = optionPane.getComponent(id);
+            if (component instanceof JPanel)
+            {
+                buttonBar = (JPanel)component;
+            }
+            if (component instanceof JSeparator)
+            {
+                component.setVisible(false);
+            }
+        }
+        
+        if (buttonBar != null)
+        {
+            buttonBar.setBorder(new EmptyBorder(10, 10, 10, 10));
+            buttonBar.setOpaque(false);
+        }
+    }
+
+    protected Component getButtonBarComponent(ImageOptionPane optionPane)
+    {
+        for (int id = 0; id < optionPane.getComponentCount(); id++)
+        {
+            System.err.println(">> " + optionPane.getComponent(id).getClass());
+        }
+        return optionPane.getComponent(1);
+    }
 	
 	/**
 	 * @param e
