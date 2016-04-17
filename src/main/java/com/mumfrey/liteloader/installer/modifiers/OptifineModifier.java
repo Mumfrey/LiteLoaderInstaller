@@ -121,7 +121,7 @@ public class OptifineModifier extends CascadeModifier
 	{
 		if (object instanceof JComboBox)
 		{
-			Object selectedItem = ((JComboBox)object).getSelectedItem();
+			Object selectedItem = ((JComboBox<?>)object).getSelectedItem();
 			if (selectedItem != null)
 				this.version = selectedItem.toString();
 		}

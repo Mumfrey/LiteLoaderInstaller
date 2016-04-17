@@ -8,7 +8,9 @@ import com.mumfrey.liteloader.installer.VersionInfo;
 
 public class VersionList
 {
-	private final File versionsDir;
+    public static final TargetVersion BASE_VERSION = new TargetVersion(VersionInfo.getMinecraftVersion());
+
+    private final File versionsDir;
 	
 	private final Set<TargetVersion> allVersions = new LinkedHashSet<TargetVersion>();
 	private final Set<TargetVersion> validVersions = new LinkedHashSet<TargetVersion>();
@@ -40,9 +42,8 @@ public class VersionList
 		this.allVersions.clear();
 		this.validVersions.clear();
 		this.liteLoaderVersions.clear();
-		TargetVersion baseVersion = new TargetVersion(VersionInfo.getMinecraftVersion());
-		this.allVersions.add(baseVersion);
-		this.validVersions.add(baseVersion);
+		this.allVersions.add(VersionList.BASE_VERSION);
+		this.validVersions.add(VersionList.BASE_VERSION);
 		
 		if (this.versionsDir != null && this.versionsDir.isDirectory())
 		{
@@ -66,8 +67,19 @@ public class VersionList
 		{
 			TargetVersion version = new TargetVersion(versionDir);
 			this.allVersions.add(version);
-			if (version.isValid()) this.validVersions.add(version);
-			if (version.isLiteLoaderVersion()) this.liteLoaderVersions.add(version);
+			if (version.isValid())
+		    {
+			    this.validVersions.add(version);
+			    if (VersionList.BASE_VERSION.equals(version))
+			    {
+			        VersionList.BASE_VERSION.copyArgsFrom(version);
+			    }
+		    }
+			
+			if (version.isLiteLoaderVersion())
+		    {
+			    this.liteLoaderVersions.add(version);
+		    }
 		}
 		catch (Exception ex)
 		{

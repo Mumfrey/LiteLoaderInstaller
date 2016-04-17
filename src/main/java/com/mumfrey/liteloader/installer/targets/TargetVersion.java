@@ -35,7 +35,7 @@ public class TargetVersion implements InstallationModifier
 	private final boolean liteloader;
 	private boolean vanilla;
 	private final ActionModifier modifier;
-	private final String minecraftArguments;
+	private String minecraftArguments;
 	
 	public TargetVersion(File file) throws IllegalArgumentException, FileNotFoundException, IOException, InvalidSyntaxException
 	{
@@ -66,12 +66,12 @@ public class TargetVersion implements InstallationModifier
 		this.minecraftArguments = TargetVersion.getMinecraftArguments(versionData);
 	}
 
-	public TargetVersion(String name)
+	TargetVersion(String name)
 	{
 		this(name, null);
 	}
 
-	public TargetVersion(String name, ActionModifier modifier)
+	TargetVersion(String name, ActionModifier modifier)
 	{
 		this.name = name;
 		this.valid = TargetVersion.isValid(name, false);
@@ -80,7 +80,12 @@ public class TargetVersion implements InstallationModifier
 		this.modifier = modifier;
 		this.minecraftArguments = null;
 	}
-	
+
+    public void copyArgsFrom(TargetVersion version)
+    {
+        this.minecraftArguments = version.minecraftArguments;
+    }
+
 	@Override
 	public String getExclusivityKey()
 	{

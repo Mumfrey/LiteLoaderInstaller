@@ -11,6 +11,7 @@ import argo.jdom.JsonNode;
 import argo.jdom.JsonNodeBuilders;
 
 import com.mumfrey.liteloader.installer.VersionInfo;
+import com.mumfrey.liteloader.installer.targets.TargetVersion;
 
 public class ForgeModifier extends CascadeModifier
 {
@@ -168,7 +169,8 @@ public class ForgeModifier extends CascadeModifier
 	{
 		if (object instanceof JComboBox)
 		{
-			Object selectedItem = ((JComboBox)object).getSelectedItem();
+			@SuppressWarnings("unchecked")
+            Object selectedItem = ((JComboBox<TargetVersion>)object).getSelectedItem();
 			if (selectedItem != null)
 				this.version = selectedItem.toString();
 		}

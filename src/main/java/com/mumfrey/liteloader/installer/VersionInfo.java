@@ -1,24 +1,21 @@
 package com.mumfrey.liteloader.installer;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
-import argo.jdom.JdomParser;
-import argo.jdom.JsonNode;
-import argo.jdom.JsonRootNode;
-
 import com.google.common.base.Charsets;
 import com.google.common.base.Splitter;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Iterables;
-import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
-import com.google.common.io.OutputSupplier;
 import com.mumfrey.liteloader.installer.targets.TargetVersion;
+
+import argo.jdom.JdomParser;
+import argo.jdom.JsonNode;
+import argo.jdom.JsonRootNode;
 
 public class VersionInfo
 {
@@ -138,8 +135,7 @@ public class VersionInfo
 	private void doFileExtract(File path, String containedFile) throws IOException
 	{
 		InputStream inputStream = getClass().getResourceAsStream("/" + containedFile);
-		OutputSupplier<FileOutputStream> outputSupplier = Files.newOutputStreamSupplier(path);
-		ByteStreams.copy(inputStream, outputSupplier);
+        Files.asByteSink(path).writeFrom(inputStream);
 	}
 	
 	public static String getMinecraftVersion()

@@ -1,6 +1,7 @@
 package com.mumfrey.liteloader.installer.actions;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
@@ -90,9 +91,10 @@ public class ClientUpgradeAction extends ClientAction
 	
 	private String readManifestEntry(File file, String attribute)
 	{
+        JarFile jar = null;
 		try
 		{
-			JarFile jar = new JarFile(file);
+		    jar = new JarFile(file);
 			Manifest manifest = jar.getManifest();
 			Attributes attributes = manifest.getMainAttributes();
 			return attributes.getValue(attribute);
@@ -100,6 +102,20 @@ public class ClientUpgradeAction extends ClientAction
 		catch (Exception ex)
 		{
 			ex.printStackTrace();
+		}
+		finally
+		{
+		    if (jar != null)
+		    {
+		        try
+                {
+                    jar.close();
+                }
+                catch (IOException ex)
+                {
+                    ex.printStackTrace();
+                }
+		    }
 		}
 		
 		return null;

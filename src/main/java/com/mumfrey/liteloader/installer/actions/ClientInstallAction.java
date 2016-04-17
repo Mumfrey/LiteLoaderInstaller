@@ -48,10 +48,11 @@ import com.mumfrey.liteloader.installer.gui.InstallerPanel;
 import com.mumfrey.liteloader.installer.gui.InstallerPanel.Metrics;
 import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 import com.mumfrey.liteloader.installer.targets.TargetVersion;
+import com.mumfrey.liteloader.installer.targets.VersionList;
 
 public class ClientInstallAction extends ClientAction
 {
-	protected final JComboBox cmbVersion;
+	protected final JComboBox<TargetVersion> cmbVersion;
 	
 	protected final JCheckBox chkAllVersions;
 	
@@ -102,8 +103,8 @@ public class ClientInstallAction extends ClientAction
 		lblVersion.setBorder(new EmptyBorder(0, 32, 0, 10));
 		lblVersion.setHorizontalTextPosition(SwingConstants.RIGHT);
 
-		this.cmbVersion = new JComboBox();
-		this.cmbVersion.addItem(new TargetVersion(VersionInfo.getMinecraftVersion()));
+		this.cmbVersion = new JComboBox<TargetVersion>();
+		this.cmbVersion.addItem(VersionList.BASE_VERSION);
 		this.cmbVersion.setBorder(new EmptyBorder(0, 0, 0, 0));
 		this.cmbVersion.setMaximumRowCount(20);
 		this.cmbVersion.addActionListener(new TargetVersionChangeListener());

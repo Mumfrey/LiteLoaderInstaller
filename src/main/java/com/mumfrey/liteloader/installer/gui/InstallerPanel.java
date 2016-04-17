@@ -495,15 +495,6 @@ public class InstallerPanel extends ImagePanel
         }
     }
 
-    protected Component getButtonBarComponent(ImageOptionPane optionPane)
-    {
-        for (int id = 0; id < optionPane.getComponentCount(); id++)
-        {
-            System.err.println(">> " + optionPane.getComponent(id).getClass());
-        }
-        return optionPane.getComponent(1);
-    }
-	
 	/**
 	 * @param e
 	 */
@@ -527,7 +518,7 @@ public class InstallerPanel extends ImagePanel
 	 * @param modifierAction
 	 * @param comboBox
 	 */
-	public void updateCombo(CascadeModifier modifierAction, JComboBox comboBox)
+	public void updateCombo(CascadeModifier modifierAction, JComboBox<String> comboBox)
 	{
 		comboBox.removeAllItems();
 		
