@@ -362,7 +362,7 @@ public class ClientInstallAction extends ClientAction
 	private HashMap<JsonStringNode, JsonNode> modifyProfileData(File target, JsonRootNode jsonProfileData, List<InstallationModifier> modifiers)
 	{
 		Set<String> jvmArgs = new LinkedHashSet<String>();
-		jvmArgs.add("-Xmx1G");
+		jvmArgs.add("-Xmx1G -XX:+UseConcMarkSweepGC -XX:+CMSIncrementalMode -XX:-UseAdaptiveSizePolicy -Xmn128M");
 		List<InstallationModifier> allModifiers = Collections.unmodifiableList(modifiers);
 		
 		for (InstallationModifier modifier : modifiers)

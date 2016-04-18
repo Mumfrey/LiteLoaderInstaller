@@ -26,7 +26,7 @@ import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 
 public class TargetVersion implements InstallationModifier
 {
-	Pattern forgeVersionPattern = Pattern.compile("forge([0-9\\.]+)", Pattern.CASE_INSENSITIVE);
+	Pattern forgeVersionPattern = Pattern.compile("forge([0-9\\.]+)(-([0-9\\.]+)(-[0-9\\.]+))?", Pattern.CASE_INSENSITIVE);
 	Pattern fmlVersionPattern = Pattern.compile("fml([0-9\\.]+)", Pattern.CASE_INSENSITIVE);
 	Pattern ofVersionPattern = Pattern.compile("optifine_([a-z0-9_]+)$", Pattern.CASE_INSENSITIVE);
 
@@ -220,7 +220,8 @@ public class TargetVersion implements InstallationModifier
 		Matcher matcher = pattern.matcher(this.name);
 		if (matcher.find())
 		{
-			String ver = matcher.group(1);
+		    String ver = matcher.group(1);
+		    if (matcher.group(2) != null) return " " + matcher.group(3);
 			return ver != null ? " " + ver : "";
 		}
 		return "";
