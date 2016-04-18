@@ -11,128 +11,128 @@ import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 
 public enum InstallerAction implements IInstallerMonitor
 {
-	CLIENT("Install LiteLoader (recommended)", "Install a new profile to the Mojang client launcher", ClientInstallAction.class, true),
-	UPGRADE("Upgrade LiteLoader", "Upgrade a liteloader library which is already installed", ClientUpgradeAction.class, true),
-	EXTRACT("Extract LiteLoader jar", "Extract the contained jar file", ExtractAction.class, false);
-	
-	private String label;
-	private String tooltip;
-	private ActionType action;
-	private boolean allowModifiers;
-	
-	private InstallerAction(String label, String tooltip, Class<? extends ActionType> action, boolean allowModifiers)
-	{
-		this.label = label;
-		this.tooltip = tooltip;
-		this.allowModifiers = allowModifiers;
-		try
-		{
-			this.action = action.newInstance();
-		}
-		catch (Exception e)
-		{
-			throw Throwables.propagate(e);
-		}
-	}
-	
-	public String getButtonLabel()
-	{
-		return this.label + this.action.getLabelSuffix();
-	}
-	
-	public String getTooltip()
-	{
-		return this.tooltip;
-	}
-	
-	public ActionType getAction()
-	{
-		return this.action;
-	}
+    CLIENT("Install LiteLoader (recommended)", "Install a new profile to the Mojang client launcher", ClientInstallAction.class, true),
+    UPGRADE("Upgrade LiteLoader", "Upgrade a liteloader library which is already installed", ClientUpgradeAction.class, true),
+    EXTRACT("Extract LiteLoader jar", "Extract the contained jar file", ExtractAction.class, false);
 
-	public boolean allowsModifiers()
-	{
-		return this.allowModifiers;
-	}
-	
-	public boolean run(File path, List<InstallationModifier> modifiers)
-	{
-		return this.action.run(path, modifiers, this);
-	}
-	
-	public boolean run(File path, List<InstallationModifier> modifiers, IInstallerMonitor status)
-	{
-		return this.action.run(path, modifiers, status);
-	}
+    private String label;
+    private String tooltip;
+    private ActionType action;
+    private boolean allowModifiers;
 
-	public String getFailureMessage()
-	{
-		return this.action.getFailureMessage();
-	}
+    private InstallerAction(String label, String tooltip, Class<? extends ActionType> action, boolean allowModifiers)
+    {
+        this.label = label;
+        this.tooltip = tooltip;
+        this.allowModifiers = allowModifiers;
+        try
+        {
+            this.action = action.newInstance();
+        }
+        catch (Exception e)
+        {
+            throw Throwables.propagate(e);
+        }
+    }
 
-	public boolean isPathValid(File targetDir)
-	{
-		return this.action.isPathValid(targetDir);
-	}
-	
-	public String getFileError(File targetDir)
-	{
-		return this.action.getFileError(targetDir);
-	}
-	
-	public String getSuccessMessage()
-	{
-		return this.action.getSuccessMessage();
-	}
-	
-	public JPanel getOptionsPanel()
-	{
-		return this.action.getOptionsPanel();
-	}
+    public String getButtonLabel()
+    {
+        return this.label + this.action.getLabelSuffix();
+    }
 
-	public static void refreshActions(File targetDir, InstallerAction selected)
-	{
-		for (InstallerAction action : InstallerAction.values())
-		{
-			action.action.setSelected(action == selected);
-			action.action.refresh(targetDir);
-		}
-	}
-	
-	public boolean isEnabled()
-	{
-		return this.action.isEnabled();
-	}
+    public String getTooltip()
+    {
+        return this.tooltip;
+    }
 
+    public ActionType getAction()
+    {
+        return this.action;
+    }
+    
+    public boolean allowsModifiers()
+    {
+        return this.allowModifiers;
+    }
 
-	@Override
-	public boolean isCancelled()
-	{
-		return false;
-	}
+    public boolean run(File path, List<InstallationModifier> modifiers)
+    {
+        return this.action.run(path, modifiers, this);
+    }
 
-	@Override
-	public void setProgressMessage(String message)
-	{
-	}
+    public boolean run(File path, List<InstallationModifier> modifiers, IInstallerMonitor status)
+    {
+        return this.action.run(path, modifiers, status);
+    }
+    
+    public String getFailureMessage()
+    {
+        return this.action.getFailureMessage();
+    }
+    
+    public boolean isPathValid(File targetDir)
+    {
+        return this.action.isPathValid(targetDir);
+    }
 
-	@Override
-	public void setProgress(int progress)
-	{
-	}
+    public String getFileError(File targetDir)
+    {
+        return this.action.getFileError(targetDir);
+    }
 
-	@Override
-	public void setProgressAndMessage(int progress, String message)
-	{
-	}
+    public String getSuccessMessage()
+    {
+        return this.action.getSuccessMessage();
+    }
 
-	@Override
-	public void beginTask(String message)
-	{
-	}
+    public JPanel getOptionsPanel()
+    {
+        return this.action.getOptionsPanel();
+    }
+    
+    public static void refreshActions(File targetDir, InstallerAction selected)
+    {
+        for (InstallerAction action : InstallerAction.values())
+        {
+            action.action.setSelected(action == selected);
+            action.action.refresh(targetDir);
+        }
+    }
 
-	@Override
-	public void onTaskCompleted(boolean success, String message)
-	{
-	}
+    public boolean isEnabled()
+    {
+        return this.action.isEnabled();
+    }
+    
+    
+    @Override
+    public boolean isCancelled()
+    {
+        return false;
+    }
+    
+    @Override
+    public void setProgressMessage(String message)
+    {
+    }
+    
+    @Override
+    public void setProgress(int progress)
+    {
+    }
+    
+    @Override
+    public void setProgressAndMessage(int progress, String message)
+    {
+    }
+    
+    @Override
+    public void beginTask(String message)
+    {
+    }
+    
+    @Override
+    public void onTaskCompleted(boolean success, String message)
+    {
+    }
 }

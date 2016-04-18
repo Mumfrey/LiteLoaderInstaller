@@ -10,23 +10,23 @@ import com.mumfrey.liteloader.installer.modifiers.InstallationModifier;
 
 public interface ActionType
 {
-	public abstract boolean run(File target, List<InstallationModifier> modifiers, IInstallerMonitor monitor);
+    public abstract boolean run(File target, List<InstallationModifier> modifiers, IInstallerMonitor monitor);
+    
+    public abstract void setSelected(boolean selected);
+    
+    public abstract void refresh(File targetDir);
 
-	public abstract void setSelected(boolean selected);
+    public abstract boolean isPathValid(File targetDir);
 
-	public abstract void refresh(File targetDir);
-	
-	public abstract boolean isPathValid(File targetDir);
-	
-	public abstract String getFileError(File targetDir);
-	
-	public abstract String getSuccessMessage();
-	
-	public abstract String getFailureMessage();
+    public abstract String getFileError(File targetDir);
 
-	public abstract JPanel getOptionsPanel();
-	
-	public abstract boolean isEnabled();
+    public abstract String getSuccessMessage();
 
-	public abstract String getLabelSuffix();
+    public abstract String getFailureMessage();
+    
+    public abstract JPanel getOptionsPanel();
+
+    public abstract boolean isEnabled();
+    
+    public abstract String getLabelSuffix();
 }

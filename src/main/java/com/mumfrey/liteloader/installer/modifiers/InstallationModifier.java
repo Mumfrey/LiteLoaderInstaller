@@ -8,11 +8,11 @@ import argo.jdom.JsonRootNode;
 
 public interface InstallationModifier
 {
-	public abstract String getExclusivityKey();
-	
-	public abstract JsonRootNode modifyVersion(JsonRootNode versionJson);
-	
-	public abstract void modifyFields(List<JsonField> fields);
-	
-	public abstract void modifyJvmArgs(List<InstallationModifier> modifiers, Set<String> jvmArgs);
+    public abstract String getExclusivityKey();
+
+    public abstract JsonRootNode modifyVersion(JsonRootNode versionJson);
+
+    public abstract void modifyFields(List<JsonField> fields);
+
+    public abstract void modifyJvmArgs(List<InstallationModifier> modifiers, Set<String> jvmArgs);
 }
