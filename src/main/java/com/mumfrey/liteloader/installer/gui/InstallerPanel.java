@@ -144,8 +144,7 @@ public class InstallerPanel extends ImagePanel
             switch (response)
             {
                 case JFileChooser.APPROVE_OPTION:
-                    InstallerPanel.this.targetDir = dirChooser.getSelectedFile();
-                    InstallerPanel.this.updateFilePath();
+                    InstallerPanel.this.setFilePath(dirChooser.getSelectedFile());
                     break;
                 default:
                     break;
@@ -355,8 +354,30 @@ public class InstallerPanel extends ImagePanel
 
         return panel;
     }
+    
+    protected void setFilePath(File dir)
+    {
+        this.targetDir = dir;
+        if (this.updateFilePath() || !dir.isDirectory())
+        {
+            return;
+        }
+        
+        File subDir = new File(dir, ".minecraft");
+        if (!subDir.isDirectory())
+        {
+            return;
+        }
+        
+        this.targetDir = subDir;
+        if (!this.updateFilePath())
+        {
+            this.targetDir = dir;
+            this.updateFilePath();
+        }
+    }
 
-    protected void updateFilePath()
+    protected boolean updateFilePath()
     {
         try
         {
@@ -403,6 +424,7 @@ public class InstallerPanel extends ImagePanel
         }
 
         this.updateModifiers();
+        return valid;
     }
 
     public boolean run()
