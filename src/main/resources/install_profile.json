@@ -1,12 +1,12 @@
 {
   "install": {
-    "profileName":"LiteLoader 1.9",
-    "target":"1.9-LiteLoader1.9",
-    "path":"com.mumfrey:liteloader:1.9-SNAPSHOT",
-    "version":"1.9",
-    "filePath":"liteloader-1.9-SNAPSHOT-release.jar",
-    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.9.",
-    "minecraft":"1.9",
+    "profileName":"LiteLoader 1.9.4",
+    "target":"1.9.4-LiteLoader1.9.4",
+    "path":"com.mumfrey:liteloader:1.9.4-SNAPSHOT",
+    "version":"1.9.4",
+    "filePath":"liteloader-1.9.4-SNAPSHOT-release.jar",
+    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.9.4.",
+    "minecraft":"1.9.4",
     "title":"LiteLoader Installer",
     "logo":"/liteloader_installer_logo.png",
     "bg":"/liteloader_installer_bg.jpg",
@@ -15,14 +15,14 @@
     "launcherProfilesJson":"launcher_profiles.json"
   },
   "versionInfo": {
-    "id": "1.9-LiteLoader1.9",
+    "id": "1.9.4-LiteLoader1.9.4",
     "time": "2015-07-27T18:29:23+01:00",
     "releaseTime": "2014-05-14T18:29:23+01:00",
     "type": "release",
     "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type} --versionType ${version_type} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
     "libraries": [
       {
-        "name": "com.mumfrey:liteloader:1.9-SNAPSHOT",
+        "name": "com.mumfrey:liteloader:1.9.4-SNAPSHOT",
         "url": "http://dl.liteloader.com/versions/"
       },
       {
@@ -34,7 +34,7 @@
     ],
     "mainClass":"net.minecraft.launchwrapper.Launch",
     "minimumLauncherVersion": 16,
-    "inheritsFrom": "1.9",
-    "jar": "1.9"
+    "inheritsFrom": "1.9.4",
+    "jar": "1.9.4"
   }
 }
