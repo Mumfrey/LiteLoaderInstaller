@@ -18,9 +18,11 @@ apply plugin: 'com.github.johnrengelman.shadow'
 // launch4j dependsOn doesn't work
 defaultTasks 'prepareManifest', 'build', 'launch4j'
 
+
 group               = 'com.mumfrey'
-version             = "${project.verMajor}.${project.verMinor}.${project.verRevision}${project.verRelease}"
-ext.mcversion       = "${project.verMajor}.${project.verMinor}" + (project.verRevision == "0" ? "" : ".${project.verRevision}")
+ext.revision        = project.verRevision == "0" ? "" : ".${project.verRevision}"
+version             = "${project.verMajor}.${project.verMinor}${project.revision}${project.verRelease}"
+ext.mcversion       = "${project.verMajor}.${project.verMinor}${project.revision}"
 ext.msversion       =  "${project.verMajor}.${project.verMinor}.${project.verRevision}.${project.verBuild}"
 archivesBaseName    = 'liteloader-installer'
 targetCompatibility = '1.6'
