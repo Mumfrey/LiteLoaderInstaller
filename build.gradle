@@ -16,7 +16,7 @@ apply plugin: 'edu.sc.seis.launch4j'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 // launch4j dependsOn doesn't work
-defaultTasks 'prepareManifest', 'build', 'launch4j'
+defaultTasks 'prepareManifest', 'build', 'launch4j', 'gather'
 
 
 group               = 'com.mumfrey'
@@ -69,12 +69,18 @@ launch4j {
     jar              = 'lib/' + project.tasks.shadowJar.archiveName
     icon             = "${projectDir}/launch4j/liteloader_installer_icon.ico"
     manifest         = "${tasks.launch4j.temporaryDir}/liteloader_installer_manifest.xml"
-    outfile          = '../libs/' + (tasks.shadowJar.archiveName - ".jar" + ".exe")
+    outfile          = tasks.shadowJar.archiveName - ".jar" + ".exe"
     version          = project.msversion
     internalName     = project.sxsname
     productName      = "LiteLoader"
     description      = "LiteLoader Installer for Minecraft ${project.mcversion} release {project.verRelease}"
     copyright        = "Copyright (C) 2013-15 Adam Mummery-Smith"
+}
+
+task gather(type: Copy) {
+    dependsOn 'launch4j'
+    from 'build/launch4j/' + launch4j.outfile
+    into 'build/libs/'
 }
 
 jar.manifest.mainAttributes (
