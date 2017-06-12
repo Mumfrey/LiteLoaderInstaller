@@ -373,7 +373,10 @@ public class ClientInstallAction extends ClientAction
         fields.add(JsonNodeFactories.field("name", JsonNodeFactories.string(this.getProfileName())));
         fields.add(JsonNodeFactories.field("lastVersionId", JsonNodeFactories.string(this.getVersion())));
         fields.add(JsonNodeFactories.field("useHopperCrashService", JsonNodeFactories.string("false")));
-        fields.add(JsonNodeFactories.field("javaArgs", JsonNodeFactories.string(Joiner.on(" ").join(jvmArgs))));
+        if (jvmArgs.size() > 0)
+        {
+            fields.add(JsonNodeFactories.field("javaArgs", JsonNodeFactories.string(Joiner.on(" ").join(jvmArgs))));
+        }
         this.modifyFields(target, fields);
 
         for (InstallationModifier modifier : modifiers)
