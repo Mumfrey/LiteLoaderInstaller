@@ -1,12 +1,12 @@
 {
   "install": {
-    "profileName":"LiteLoader 1.12",
-    "target":"1.12-LiteLoader1.12",
-    "path":"com.mumfrey:liteloader:1.12-SNAPSHOT",
-    "version":"1.12",
-    "filePath":"liteloader-1.12-SNAPSHOT-release.jar",
-    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.12-SNAPSHOT.",
-    "minecraft":"1.12",
+    "profileName":"LiteLoader 1.12.1",
+    "target":"1.12.1-LiteLoader1.12.1",
+    "path":"com.mumfrey:liteloader:1.12.1-SNAPSHOT",
+    "version":"1.12.1",
+    "filePath":"liteloader-1.12.1-SNAPSHOT-release.jar",
+    "welcome":"Welcome to the LiteLoader installer for Minecraft 1.12.1-SNAPSHOT.",
+    "minecraft":"1.12.1",
     "title":"LiteLoader Installer",
     "logo":"/liteloader_installer_logo.png",
     "bg":"/liteloader_installer_bg.jpg",
@@ -15,14 +15,14 @@
     "launcherProfilesJson":"launcher_profiles.json"
   },
   "versionInfo": {
-    "id": "1.12-LiteLoader1.12",
+    "id": "1.12.1-LiteLoader1.12.1",
     "time": "2016-11-01T00:00:00+01:00",
     "releaseTime": "2016-11-01T00:00:00+01:00",
     "type": "release",
     "minecraftArguments": "--username ${auth_player_name} --version ${version_name} --gameDir ${game_directory} --assetsDir ${assets_root} --assetIndex ${assets_index_name} --uuid ${auth_uuid} --accessToken ${auth_access_token} --userType ${user_type} --versionType ${version_type} --tweakClass com.mumfrey.liteloader.launch.LiteLoaderTweaker",
     "libraries": [
       {
-        "name": "com.mumfrey:liteloader:1.12-SNAPSHOT",
+        "name": "com.mumfrey:liteloader:1.12.1-SNAPSHOT",
         "url": "http://dl.liteloader.com/versions/"
       },
       {
@@ -34,7 +34,7 @@
     ],
     "mainClass":"net.minecraft.launchwrapper.Launch",
     "minimumLauncherVersion": 18,
-    "inheritsFrom": "1.12",
-    "jar": "1.12"
+    "inheritsFrom": "1.12.1",
+    "jar": "1.12.1"
   }
 }
